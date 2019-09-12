@@ -1,52 +1,82 @@
-class State{
-    data = {};
-    methodes = {};
-    element = null;
-    activeElements = [];
-    instance = null;
-    getInstance(){
-        if(this.instance === null){
+'use strict';
+
+class State {
+    data;
+    element;
+    activeElements;
+    engine;
+    disabledElements;
+    getInstance() {
+        if (this.instance === null) {
             this.instance = new State();
         }
         return this.instance;
     }
-    constructor(){
+    constructor() {
+        this.data = {};
+        this.activeElements = [];
+        this.engine = new RenderingEngine(this);
+        this.disabledElements = []
+
     }
 
-    updateElementRefByObject(object, ref){
-        for(let element of this.activeElements){
-            if(element[1] === object){
+    updateElementRefByObject(object, ref) {
+        for (let element of this.activeElements) {
+            if (element[1] === object) {
                 element[0] = ref;
             }
         }
     }
 
-    addActiveElement(ref, object, content, interpolation){
+    addActiveElement(ref, object, content, interpolation) {
         this.activeElements.push([ref, object, content, interpolation]);
     }
-    
-    findElementByRef(ref){
+
+    findElementByRef(ref) {
         for (const element of this.activeElements) {
-            if(element[0] === ref) return element;
+            if (element[0] === ref) return element;
         }
     }
-    getHtmlReferenceOfStateElement(element){
+    getHtmlReferenceOfStateElement(element) {
         return element[0];
     }
-    stripAndTrimInterpolation(interpolation){
+    stripAndTrimInterpolation(interpolation) {
         interpolation = interpolation.replace('{{', '');
         interpolation = interpolation.replace('}}', '');
         interpolation = interpolation.trim();
         return interpolation;
     }
 
-    findElementsByObject(obj, prop){
+
+    disableElementIfNeeded(element) {
+        console.warn('disable called');
+        console.warn(element);
+        if ('getAttribute' in element) {
+            var statement = element.getAttribute('n-for');
+            if (statement === null) return;
+            console.log('disabling element')
+            var statementSplit = statement.split(' ');
+            var name = statementSplit[1]; // let name of array
+            this.engine.disableInterpolationForVariableNameOnElement(name, element);
+        }
+
+    }
+    findElementsByObject(obj, prop) {
         let elements = [];
         for (const element of this.activeElements) {
-            if(this.stripAndTrimInterpolation(element[3]) === prop){
+            if (this.engine.isForAttribute(element)) {
+                this.disableElementIfNeeded(element[0]);
                 elements.push(element);
+                console.log('Attribute element pushed');
+            } else {
+                if (this.stripAndTrimInterpolation(element[3]) === prop) {
+                    elements.push(element);
+                }
             }
+
         }
+        console.log('returning elements');
+
         return elements;
     }
 }

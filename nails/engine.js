@@ -1,12 +1,15 @@
-class NailsFunctions {
-    state = null;
-    directives = null;
+'use strict';
+
+class RenderingEngine {
+    state;
+    directives;
     constructor(state) {
         if (typeof state === 'undefined' || state === null) {
-            console.log("Functions were initialized without a state");
+            console.log("Engine was initialized without a state");
         }
         this.state = state;
         this.directives = new NailsDirectives();
+
     }
 
     setTitle() {
@@ -15,12 +18,33 @@ class NailsFunctions {
         }
     }
 
+    disableInterpolationForVariableNameOnElement(name, element){
+        if(typeof name === 'undefined' || typeof element === 'undefined') return;
+        for(let el of this.state.disabledElements){
+            if(el[0] == name && el[1] == element){
+                return;
+            }
+        }
+        this.state.disabledElements.push([name, element]);
+        console.log(this.state.disabledElements);
+    }
     getElementDerrivedObject(element) {
         return 'object'
     }
     getElementDerrivedProperty(element) {
         return 'property'
     };
+    getForArrayByStatement(statement){
+        return statement.split(' ').last;
+    }
+    isForAttribute(element){
+        element = element[0];
+        if('getAttribute' in element) {
+            return element.getAttribute('n-for') !== null; 
+        }else{
+            return false;
+        }
+    }
     isActiveElement(element) {
         return this.getElementDirectives(element).length > 0;
     }
@@ -80,13 +104,14 @@ class NailsFunctions {
     
    
     getValueOfInterpolation(interpolation){
+        var interpolated = interpolation;
         // This comes in the format of {{ interpolation }}
         interpolation = interpolation.trim();
         if(interpolation.match(/{{(( +)?\w+.?\w+( +)?)}}/g)){
             interpolation = this.stripAndTrimInterpolation(interpolation);
         }else{
             console.warn('Not found interpolation in submitted value: ' + interpolation);
-            return 'undefined';
+            return interpolation;
         }
         interpolation = interpolation.trim();
         if(interpolation.split('.').length > 1){
@@ -128,11 +153,24 @@ class NailsFunctions {
         
     }
     updateInterpolatedElement(ref, originalText){
+        console.log('update: ' + originalText)
         let interpolations = this.getInterpolationsForInnerText(originalText);
+        console.log(interpolations);
         if(interpolations.length === 0) return;
         let interpolatedText = originalText;
         for(let interpolation of interpolations){
-            const value = this.getValueOfInterpolation(interpolation);
+            console.log('in loopxs')
+            const value = this.getValueOfInterpolation(interpolation);  
+            console.log(value);
+                      
+            if(this.isElementDisabled(this.stripAndTrimInterpolation(interpolation), ref)){
+                console.warn('Found disabled element');
+                continue;
+            }else{
+                console.warn('not found');
+                
+            }
+
             interpolatedText = interpolatedText.replace(interpolation, value);
         }
 
@@ -140,9 +178,28 @@ class NailsFunctions {
         ref.textContent = interpolatedText;
 
     }
+    isElementDisabled(name, element){
+        console.log(this.state.disabledElements);
+        for(let disabled of this.state.disabledElements){
+            console.log(this.state.disabledElements.length);
+            if(disabled[0] === name && disabled[1] === element){
+                return true;
+            }
+        }
+        return false;
+    }
     interpolateElement(element, interpolations){
         for(let interpolation of interpolations){
+            this.state.disableElementIfNeeded(element);
             let value = this.getValueOfInterpolation(interpolation);
+            console.log(interpolation);
+            if(this.isElementDisabled(this.stripAndTrimInterpolation(interpolation), element)){
+                console.warn('Found disabled element, skipping');
+                continue;
+            }else{
+                console.warn('not found');
+                
+            }
             var text = element.innerText || element.textContent;
             text = text.replace(interpolation, value);
             if('innerText' in element){

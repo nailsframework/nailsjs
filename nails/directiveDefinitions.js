@@ -1,7 +1,11 @@
-class NailsDirectives {
-    directives = ['if', 'form'];
-    constructor() {
+'use strict';
 
+class NailsDirectives {
+
+    directives;
+
+    constructor() {
+        this.directives = ['if', 'form', 'for']
     }
     /*
         A directive exists of an element (string) in the @directives array and a function declaration 
@@ -32,6 +36,13 @@ class NailsDirectives {
             state.data[statemenet] = element.value;
         });
 
+    }
+
+    for = function (element, statemenet, state){
+      // As n-for uses deeper integration in the rendering engine, code has been outsourced.
+      // Only nessesairy steps are done here. Normal plugins should _not_ change the rendering engine if not absolutly mandatory.
+      
+        
     }
     if = function (element, statement, state) {
         console.log('if called with statement: ' + statement + ' for element ' + element)
