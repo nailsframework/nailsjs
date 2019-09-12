@@ -32,20 +32,20 @@ class NailsDirectives{
             statement = statement.substring(1);
             reversed = true;
         }
-        if(state.data.hasOwnProperty(statement)){
-            if(reversed){
-                if(!eval(state.data[statement])){    
+        if (state.data.hasOwnProperty(statement)) {
+            if (reversed) {
+                if (!eval(state.data[statement])) {
+                    console.log('showing');
                     element.style.display = 'block';
                 }else{
                     element.style.display = 'none';    
                 }
-            }else{
-                if(eval(state.data[statement])){
-                    
+            } else {
+                if (eval(state.data[statement])) {
                     element.style.display = 'block';
-                }else{
-                    element.style.display = 'none';
-    
+                } else {
+                    console.log('hiding');
+
                 }
             }
            

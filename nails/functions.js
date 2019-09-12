@@ -124,15 +124,6 @@ class NailsFunctions {
         return this.state.data[interpolation]; //Handle interpolations with . inside
     }
 
-    hideElement(element){
-        if('style' in element){
-            element.style.display = 'none';
-        }
-    }
-    showElement(element){
-        element.style.display = 'block';
-    }
-
     interpolateOnTextWithState(text, state){
         
     }
@@ -162,9 +153,6 @@ class NailsFunctions {
                 element.textContent = text;
                 continue;
             }
-        }
-        if('style' in element){
-            element.style.display = 'block';
         }
         element.setAttribute('n-generated', 'true')
         return element;
@@ -199,7 +187,7 @@ class NailsFunctions {
         if(interpolations.length === 0){
             return; //No interpolations on this element
         }
-
+        
         this.hideElement(element);
         
         if(element.nodeType === 3){
