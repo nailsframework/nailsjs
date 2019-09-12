@@ -59,6 +59,19 @@ All Directives:
 
 
 ... more are following soon.
+
+### Branches
+
+
+
+
+| Branch        | What to expect  |
+| ------------- |:-------------:  |
+| master      | The most stable version|
+| develop     | Not really unstable, but bugs may occur.      |
+| feature/* | For your own safety, and for the safety of your project, dont touch any of these.     |
+
+
 ### Development
 
 Want to contribute? Great!
