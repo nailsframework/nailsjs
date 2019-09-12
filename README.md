@@ -55,6 +55,7 @@ You can add a directive to your element like following:
 All Directives:
 
 ```n-if```: Shows or hides the Element, based on the boolean attribute passed in.
+```n-if```: Generates a field with the name specified in the ```directive``` and updates all elements accordingly.
 
 
 ... more are following soon.

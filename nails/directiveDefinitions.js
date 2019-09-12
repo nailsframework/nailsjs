@@ -1,6 +1,6 @@
-class NailsDirectives{
-    directives = ['if'];
-    constructor(){
+class NailsDirectives {
+    directives = ['if', 'form'];
+    constructor() {
 
     }
     /*
@@ -24,34 +24,42 @@ class NailsDirectives{
         DONT PREFIX YOUR DIRECTIVE AND FUNCTIONS WITH AN N
     */
 
-    if = function(element, statement, state){
-        //this can be called with for example <h1 n-if="true"></h1>
+    form = function (element, statemenet, state) {
+        if (element.getAttribute('type') === 'text') {
+            state.data[statemenet] = element.value;
+        }
+        element.addEventListener("input", () => {
+            state.data[statemenet] = element.value;
+        });
+
+    }
+    if = function (element, statement, state) {
+        console.log('if called with statement: ' + statement + ' for element ' + element)
         let reversed = false;
-        if(statement[0] === '!'){
-            //User tries to reverse the statement.
+        if (statement[0] === '!') {
             statement = statement.substring(1);
             reversed = true;
         }
         if (state.data.hasOwnProperty(statement)) {
             if (reversed) {
                 if (!eval(state.data[statement])) {
-                    console.log('showing');
                     element.style.display = 'block';
-                }else{
-                    element.style.display = 'none';    
+                } else {
+
+                    element.style.display = 'none';
                 }
             } else {
                 if (eval(state.data[statement])) {
                     element.style.display = 'block';
                 } else {
-                    console.log('hiding');
+                    element.style.display = 'none';
 
                 }
             }
-           
+
         } else {
             console.warn('statement: ' + statement + ' not found in context')
         }
     }
-    
+
 }

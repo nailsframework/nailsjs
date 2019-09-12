@@ -188,8 +188,6 @@ class NailsFunctions {
             return; //No interpolations on this element
         }
         
-        this.hideElement(element);
-        
         if(element.nodeType === 3){
             element = element.parentNode;
             
