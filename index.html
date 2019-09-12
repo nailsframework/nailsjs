@@ -1,0 +1,34 @@
+<html>
+
+<head>
+    <title>{{ title }}</title>
+    <script src="nails/directiveDefinitions.js"></script>
+    <script src="nails/state.js"></script>
+    <script src="nails/functions.js"></script>
+    <script src="nails/nails.js"></script>
+</head>
+
+<body>
+    <h1>NOT ACTIVE</h1>
+    <h1 n-if="boolValue">I am here if boolValue is true, actually it is {{boolValue}} btw, next follows our app title {{ title}} and {{someValue}}
+    </h1>
+
+
+</body>
+<style>
+
+</style>
+
+<script>
+    let nails = new Nails({
+        el: "body", //Start with # to specify id
+        data: {
+            title: "Your Nails App",
+            boolValue: true,
+            someValue: '<script>alert(1);<\/script>'
+        }
+    });
+
+</script>
+
+</html>
