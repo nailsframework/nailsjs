@@ -83,3 +83,5 @@ MIT
 
 **Free Software, Hell Yeah!**
 
+ * Author: Dominic Järmann
+
