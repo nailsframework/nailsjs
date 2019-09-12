@@ -6,7 +6,7 @@ NailsFramework or short NailsJS is a newcorner Javascript library.
 
 # New Features!
 
-  - Reactive DOM. Change values in the console and see magic happen.
+  - Reactive DOM. Change values in the console and see the magic happen.
   - String interpolation
   - Directives
   - Intelligent DOM Rendering, does not re-render whole DOM but only the parts, which 
