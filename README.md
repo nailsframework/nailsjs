@@ -21,7 +21,7 @@ Insert follwing code into your HTML head.
 ```
 <script src="nails/directiveDefinitions.js"></script>
 <script src="nails/state.js"></script>
-<script src="nails/functions.js"></script>
+<script src="nails/engine.js"></script>
 <script src="nails/nails.js"></script>
 ```
 

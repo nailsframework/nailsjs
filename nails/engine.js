@@ -1,12 +1,15 @@
-class NailsFunctions {
-    state = null;
-    directives = null;
+'use strict';
+
+class RenderingEngine {
+    state;
+    directives;
     constructor(state) {
         if (typeof state === 'undefined' || state === null) {
-            console.log("Functions were initialized without a state");
+            console.log("Engine was initialized without a state");
         }
         this.state = state;
         this.directives = new NailsDirectives();
+
     }
 
     setTitle() {
@@ -15,18 +18,38 @@ class NailsFunctions {
         }
     }
 
+    disableInterpolationForVariableNameOnElement(name, element) {
+        if (typeof name === 'undefined' || typeof element === 'undefined') return;
+        for (let el of this.state.disabledElements) {
+            if (el[0] == name && el[1] == element) {
+                return;
+            }
+        }
+        this.state.disabledElements.push([name, element]);
+    }
     getElementDerrivedObject(element) {
         return 'object'
     }
     getElementDerrivedProperty(element) {
         return 'property'
     };
+    getForArrayByStatement(statement) {
+        return statement.split(' ').last;
+    }
+    isForAttribute(element) {
+        element = element[0];
+        if ('getAttribute' in element) {
+            return element.getAttribute('n-for') !== null;
+        } else {
+            return false;
+        }
+    }
     isActiveElement(element) {
         return this.getElementDirectives(element).length > 0;
     }
 
-    removePrefix(directive){
-         return directive.substring(2)
+    removePrefix(directive) {
+        return directive.substring(2)
     }
     prefixDiretive(directive) {
         return 'n-' + directive;
@@ -43,6 +66,7 @@ class NailsFunctions {
     }
 
     indexElement(element) {
+        this.state.disableElementIfNeeded(element);
         let activeElements = [];
         for (let child of element.childNodes) {
             let active = this.indexElement(child);
@@ -57,99 +81,168 @@ class NailsFunctions {
         return activeElements;
     }
 
-    getElementAttributeForDirective(element, directive){
+    getElementAttributeForDirective(element, directive) {
         directive = this.prefixDiretive(directive);
-        if(element.hasAttribute(directive)){
-            return  element.getAttribute(directive);
-        }else{
-            console.warn('directive: '  + directive + ' not found on element: ' + element);
+        if (element.hasAttribute(directive)) {
+            return element.getAttribute(directive);
+        } else {
+            console.warn('directive: ' + directive + ' not found on element: ' + element);
             return '';
         }
     }
-    executeDirectivesOnElement(element){
-        var directives = this.getElementDirectives(element[0]);    
-        for(let directive of directives){     
-            directive = this.removePrefix(directive); 
-            if(directive in this.directives){
+    executeDirectivesOnElement(element) {
+        var directives = this.getElementDirectives(element[0]);
+        for (let directive of directives) {
+            directive = this.removePrefix(directive);
+            if (directive in this.directives) {
                 this.directives[directive](element[0], this.getElementAttributeForDirective(element[0], directive), this.state)
-            }else{
+            } else {
                 console.warn('not found directive: ' + directive)
             }
         }
     }
-    
-   
-    getValueOfInterpolation(interpolation){
+
+
+
+
+    stripAndTrimNForInterpolation(interpolation) {
+        interpolation = interpolation.replace('[[[', '');
+        interpolation = interpolation.replace(']]]', '');
+        interpolation = interpolation.trim();
+        return interpolation;
+    }
+
+    getNForInterpolations(content){
+        const interpolations = [];
+        content = content.trim();
+        var matches = content.match(/\[\[\[(( +)?\w+.?\w+( +)?)\]\]\]/g);
+        if(matches === null) return interpolations;
+        for(const match of matches){
+            interpolations.push(match);
+        }
+
+        return interpolations;
+    }
+    getNForInterpolation(interpolation) {
+        interpolation = interpolation.trim();
+        if (interpolation.match(/\[\[\[(( +)?\w+.?\w+( +)?)\]\]\]/g)) {
+            interpolation = this.stripAndTrimNForInterpolation(interpolation);
+        } else {
+            console.warn('Not found interpolation in submitted value: ' + interpolation);
+            return interpolation;
+        }
+
+        return interpolation;
+
+    }
+    getValueOfInterpolation(interpolation) {
+        var interpolated = interpolation;
         // This comes in the format of {{ interpolation }}
         interpolation = interpolation.trim();
-        if(interpolation.match(/{{(( +)?\w+.?\w+( +)?)}}/g)){
+        if (interpolation.match(/{{(( +)?\w+.?\w+( +)?)}}/g)) {
             interpolation = this.stripAndTrimInterpolation(interpolation);
-        }else{
+        } else {
             console.warn('Not found interpolation in submitted value: ' + interpolation);
-            return 'undefined';
+            return interpolation;
         }
         interpolation = interpolation.trim();
-        if(interpolation.split('.').length > 1){
+        if (interpolation.split('.').length > 1) {
             //Worst case, user uses somehting like
             // object.attribute.item.prop;
             // we need to handle that.
-            
+            return "[[[" + interpolation + "]]]";
+            console.error('this.state.data.' + interpolation);
             return eval('this.state.data.' + interpolation); // TODO: Better and safer way
-        }else{
+        } else {
             return this.state.data[interpolation];
         }
     }
 
-    removeWhiteSpaceFromString(str){
+    removeWhiteSpaceFromString(str) {
         return str.replace(/\s/g, "");
     }
-    stripAndTrimInterpolation(interpolation){
+    stripAndTrimInterpolation(interpolation) {
         interpolation = interpolation.replace('{{', '');
         interpolation = interpolation.replace('}}', '');
         interpolation = interpolation.trim();
         return interpolation;
     }
-    getInterpolationsForInnerText(text){
+    getInterpolationsForInnerText(text) {
         const interpolations = [];
         //text may come in this format 'hi, this is {{test}} and this is {{abc}}'
         var matches = text.match(/{{(( +)?\w+.?\w+( +)?)}}/g);
-        if(matches === null) return [];
-        for(let match of matches){
+        if (matches === null) return [];
+        for (let match of matches) {
             interpolations.push(match);
         }
         return interpolations;
     }
-    getObjectReferenceByInterpolationName(interpolation){
+    getObjectReferenceByInterpolationName(interpolation) {
         interpolation = this.stripAndTrimInterpolation(interpolation);
         return this.state.data[interpolation]; //Handle interpolations with . inside
     }
 
-    interpolateOnTextWithState(text, state){
-        
+    interpolateOnTextWithState(text, state) {
+
     }
-    updateInterpolatedElement(ref, originalText){
+    updateInterpolatedElement(ref, originalText) {
         let interpolations = this.getInterpolationsForInnerText(originalText);
-        if(interpolations.length === 0) return;
+        if (interpolations.length === 0) return;
         let interpolatedText = originalText;
-        for(let interpolation of interpolations){
+        for (let interpolation of interpolations) {
             const value = this.getValueOfInterpolation(interpolation);
+
+            if (this.isElementDisabled(this.stripAndTrimInterpolation(interpolation), ref)) {
+                continue;
+            }
+
             interpolatedText = interpolatedText.replace(interpolation, value);
         }
 
-        
+
         ref.textContent = interpolatedText;
 
     }
-    interpolateElement(element, interpolations){
-        for(let interpolation of interpolations){
+    isDescendant(parent, child) {
+
+        var node = child.parentNode;
+        while (node != null) {
+            if (node == parent) {
+                return true;
+            }
+            node = node.parentNode;
+        }
+        return false;
+    }
+
+    isElementDisabled(name, element) {
+        for (let disabled of this.state.disabledElements) {
+            if (this.isDescendant(element, disabled[1])) {
+                if (disabled[0] === name) return true; //Edge case, we have a f***ing scope
+            }
+            if (disabled[0] === name && disabled[1] === element) {
+                return true;
+            }
+        }
+        return false;
+    }
+    interpolateElement(element, interpolations) {
+
+        for (let interpolation of interpolations) {
+            this.state.disableElementIfNeeded(element);
             let value = this.getValueOfInterpolation(interpolation);
+            if (this.isElementDisabled(this.stripAndTrimInterpolation(interpolation).trim(), element)) {
+                continue;
+
+            }
+
             var text = element.innerText || element.textContent;
             text = text.replace(interpolation, value);
-            if('innerText' in element){
+            if ('innerText' in element) {
                 element.innerText = text;
                 continue;
             }
-            if('textContent' in element){
+            if ('textContent' in element) {
                 element.textContent = text;
                 continue;
             }
@@ -157,7 +250,7 @@ class NailsFunctions {
         element.setAttribute('n-generated', 'true')
         return element;
     }
-    executeInerpolationsOnElement(element){
+    executeInerpolationsOnElement(element) {
         //This is going to be tricky. As we are getting the root element where nails js is bound 
         //to as an argument. Also, interpolation goes down the DOM. For example, consider following dom
         /*
@@ -179,26 +272,26 @@ class NailsFunctions {
         for (const child of element.childNodes) {
             this.executeInerpolationsOnElement(child);
         }
-        
-        
 
-        const interpolations =  this.getInterpolationsForInnerText(element.innerText || element.textContent);
-       
-        if(interpolations.length === 0){
+
+
+        const interpolations = this.getInterpolationsForInnerText(element.innerText || element.textContent);
+
+        if (interpolations.length === 0) {
             return; //No interpolations on this element
         }
-        
-        if(element.nodeType === 3){
+
+        if (element.nodeType === 3) {
             element = element.parentNode;
-            
+
         }
-        for(var interpolation of interpolations){
+        for (var interpolation of interpolations) {
             this.state.addActiveElement(element, this.getObjectReferenceByInterpolationName(interpolation), element.innerText || element.textContent, interpolation);
         }
 
         element.replaceWith(this.interpolateElement(element, interpolations));
-        
-        
+
+
 
 
     }

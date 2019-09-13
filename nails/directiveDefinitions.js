@@ -1,7 +1,11 @@
-class NailsDirectives {
-    directives = ['if', 'form'];
-    constructor() {
+'use strict';
 
+class NailsDirectives {
+
+    directives;
+
+    constructor() {
+        this.directives = ['if', 'form', 'for']
     }
     /*
         A directive exists of an element (string) in the @directives array and a function declaration 
@@ -33,8 +37,52 @@ class NailsDirectives {
         });
 
     }
+
+    for = function (element, statemenet, state) {
+        // As n-for uses deeper integration in the rendering engine, code has been outsourced to the engine.
+        // Only nessesairy steps are done here. Normal plugins should _not_ change the rendering engine if not absolutly mandatory.
+        element.style.display = 'none';
+        let engine = new RenderingEngine(state);
+        let refArray = statemenet.split(' ').pop();
+        let refInterpolation = statemenet.split(' ')[1];
+        let useDot = true;
+        refArray = eval('state.data.' + refArray);
+        if (typeof refArray === 'undefined') return;
+        let parent = element.parentNode;
+        for (let i of refArray) {
+            let node = document.createElement(element.nodeName);
+            node.textContent = element.textContent;
+
+
+            var interpolations = engine.getNForInterpolations(node.textContent);
+
+
+            if (interpolations.length === 0) {
+                //Try normal interpolations
+                useDot = false;
+                interpolations = engine.getInterpolationsForInnerText(node.textContent);
+            }
+
+            for (const interpolation of interpolations) {
+
+
+
+                if (useDot) {
+                    node.textContent = node.textContent.replace(interpolation, i[engine.stripAndTrimNForInterpolation(interpolation).split('.')[1]]);
+                } else {
+                    // let stripped = engine.stripAndTrimInterpolation(interpolation);
+                    node.textContent = node.textContent.replace(interpolation, i);
+                }
+
+
+            }
+            parent.appendChild(node);
+
+        }
+
+
+    }
     if = function (element, statement, state) {
-        console.log('if called with statement: ' + statement + ' for element ' + element)
         let reversed = false;
         if (statement[0] === '!') {
             statement = statement.substring(1);

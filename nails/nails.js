@@ -1,6 +1,8 @@
+'use strict';
+
 class Nails {
-    state = null;
-    nailsFunctions = null;
+    state;
+    engine;
     constructor(object) {
         this.state = new State();
         console.log("NailsJS Created with constructor object: " + JSON.stringify(object));
@@ -12,18 +14,25 @@ class Nails {
         if (object.hasOwnProperty('data')) {
             this.state.data = object.data;
         }
-        this.nailsFunctions = new NailsFunctions(this.state);
+        if(object.hasOwnProperty('methods')){
+            this.state.methods = object.methods;
+        }
+        this.engine = new RenderingEngine(this.state);
         this.setUpProxy();
         this.indexDOM();
-        this.nailsFunctions.setTitle();
+        this.state.methods.onMounted(this.state);
+        this.engine.setTitle();
+        
     }
 
     notifyDOM(target, prop, value) {
         var ref = this.state.findElementsByObject(target, prop);
-        if (ref === [] || ref.length === 0) return;
+        if (ref === [] || ref.length === 0) {
+            return;
+        };
         ref = this.state.getHtmlReferenceOfStateElement(ref);
-        this.nailsFunctions.updateInterpolatedElement(ref[0], ref[2]);
-        this.nailsFunctions.executeDirectivesOnElement(ref);
+        this.engine.updateInterpolatedElement(ref[0], ref[2]);
+        this.engine.executeDirectivesOnElement(ref);
         return true;
     };
     indexDOM = function () {
@@ -52,21 +61,22 @@ class Nails {
                 element = element[0];
             }
 
+
             //From now on, we need to loop through all elements
-            let activeElements = this.nailsFunctions.indexElement(element);
+            let activeElements = this.engine.indexElement(element);
             //Execute Directives
 
             for (let el of activeElements) {
-                this.nailsFunctions.executeDirectivesOnElement(el);
+                this.engine.executeDirectivesOnElement(el);
             }
-            this.nailsFunctions.executeInerpolationsOnElement(element);
+            this.engine.executeInerpolationsOnElement(element);
         }
     }
     setUpProxy() {
         const handler = {
             state: this.state,
             notifyDom: this.notifyDOM,
-            nailsFunctions: this.nailsFunctions,
+            engine: this.engine,
 
             get: function (target, prop, receiver) {
                 return target[prop];
