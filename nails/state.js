@@ -49,12 +49,9 @@ class State {
 
 
     disableElementIfNeeded(element) {
-        console.warn('disable called');
-        console.warn(element);
         if ('getAttribute' in element) {
             var statement = element.getAttribute('n-for');
             if (statement === null) return;
-            console.log('disabling element')
             var statementSplit = statement.split(' ');
             var name = statementSplit[1]; // let name of array
             this.engine.disableInterpolationForVariableNameOnElement(name, element);
@@ -63,11 +60,10 @@ class State {
     }
     findElementsByObject(obj, prop) {
         let elements = [];
-        for (const element of this.activeElements) {
+        for (const element of this.activeElements) {            
             if (this.engine.isForAttribute(element)) {
                 this.disableElementIfNeeded(element[0]);
                 elements.push(element);
-                console.log('Attribute element pushed');
             } else {
                 if (this.stripAndTrimInterpolation(element[3]) === prop) {
                     elements.push(element);
@@ -75,7 +71,6 @@ class State {
             }
 
         }
-        console.log('returning elements');
 
         return elements;
     }

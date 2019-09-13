@@ -61,7 +61,6 @@ class Nails {
                 element = element[0];
             }
 
-            this.state.disableElementIfNeeded(element);
 
             //From now on, we need to loop through all elements
             let activeElements = this.engine.indexElement(element);

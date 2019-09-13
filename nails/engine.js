@@ -26,7 +26,6 @@ class RenderingEngine {
             }
         }
         this.state.disabledElements.push([name, element]);
-        console.log(this.state.disabledElements);
     }
     getElementDerrivedObject(element) {
         return 'object'
@@ -104,6 +103,38 @@ class RenderingEngine {
     }
 
 
+
+
+    stripAndTrimNForInterpolation(interpolation) {
+        interpolation = interpolation.replace('[[[', '');
+        interpolation = interpolation.replace(']]]', '');
+        interpolation = interpolation.trim();
+        return interpolation;
+    }
+
+    getNForInterpolations(content){
+        const interpolations = [];
+        content = content.trim();
+        var matches = content.match(/\[\[\[(( +)?\w+.?\w+( +)?)\]\]\]/g);
+        if(matches === null) return interpolations;
+        for(const match of matches){
+            interpolations.push(match);
+        }
+
+        return interpolations;
+    }
+    getNForInterpolation(interpolation) {
+        interpolation = interpolation.trim();
+        if (interpolation.match(/\[\[\[(( +)?\w+.?\w+( +)?)\]\]\]/g)) {
+            interpolation = this.stripAndTrimNForInterpolation(interpolation);
+        } else {
+            console.warn('Not found interpolation in submitted value: ' + interpolation);
+            return interpolation;
+        }
+
+        return interpolation;
+
+    }
     getValueOfInterpolation(interpolation) {
         var interpolated = interpolation;
         // This comes in the format of {{ interpolation }}
@@ -119,7 +150,8 @@ class RenderingEngine {
             //Worst case, user uses somehting like
             // object.attribute.item.prop;
             // we need to handle that.
-
+            return "[[[" + interpolation + "]]]";
+            console.error('this.state.data.' + interpolation);
             return eval('this.state.data.' + interpolation); // TODO: Better and safer way
         } else {
             return this.state.data[interpolation];
@@ -154,22 +186,14 @@ class RenderingEngine {
 
     }
     updateInterpolatedElement(ref, originalText) {
-        console.log('update: ' + originalText)
         let interpolations = this.getInterpolationsForInnerText(originalText);
-        console.log(interpolations);
         if (interpolations.length === 0) return;
         let interpolatedText = originalText;
         for (let interpolation of interpolations) {
-            console.log('in loopxs')
             const value = this.getValueOfInterpolation(interpolation);
-            console.log(value);
 
             if (this.isElementDisabled(this.stripAndTrimInterpolation(interpolation), ref)) {
-                console.warn('Found disabled element');
                 continue;
-            } else {
-                console.warn('not found');
-
             }
 
             interpolatedText = interpolatedText.replace(interpolation, value);
@@ -180,8 +204,6 @@ class RenderingEngine {
 
     }
     isDescendant(parent, child) {
-        console.warn('isDescendant: ' + child);
-        console.warn('isDescendant: ' + parent);
 
         var node = child.parentNode;
         while (node != null) {
@@ -194,16 +216,10 @@ class RenderingEngine {
     }
 
     isElementDisabled(name, element) {
-        console.log(element);
-        console.log(name);
-
-        console.log(this.state.disabledElements)
         for (let disabled of this.state.disabledElements) {
-            if(this.isDescendant(element, disabled[1])){
-                console.error("Descendad found")
-                if(disabled[0] === name) return true; //Edge case, we have a f***ing scope
+            if (this.isDescendant(element, disabled[1])) {
+                if (disabled[0] === name) return true; //Edge case, we have a f***ing scope
             }
-            console.log(this.state.disabledElements.length);
             if (disabled[0] === name && disabled[1] === element) {
                 return true;
             }
@@ -215,17 +231,10 @@ class RenderingEngine {
         for (let interpolation of interpolations) {
             this.state.disableElementIfNeeded(element);
             let value = this.getValueOfInterpolation(interpolation);
-            console.log(interpolation);
             if (this.isElementDisabled(this.stripAndTrimInterpolation(interpolation).trim(), element)) {
-                console.warn('Found disabled element, skipping');
                 continue;
-                console.error('WTF');
-
-            } else {
-                console.warn('not found');
 
             }
-            console.log('setting: ' + interpolation);
 
             var text = element.innerText || element.textContent;
             text = text.replace(interpolation, value);
