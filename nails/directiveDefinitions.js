@@ -39,48 +39,38 @@ class NailsDirectives {
     }
 
     for = function (element, statemenet, state) {
-        // As n-for uses deeper integration in the rendering engine, code has been outsourced to the engine.
-        // Only nessesairy steps are done here. Normal plugins should _not_ change the rendering engine if not absolutly mandatory.
-        element.style.display = 'none';
         let engine = new RenderingEngine(state);
-        let refArray = statemenet.split(' ').pop();
-        let refInterpolation = statemenet.split(' ')[1];
-        let useDot = true;
-        refArray = eval('state.data.' + refArray);
-        if (typeof refArray === 'undefined') return;
-        let parent = element.parentNode;
-        for (let i of refArray) {
-            let node = document.createElement(element.nodeName);
-            node.textContent = element.textContent;
-
-
-            var interpolations = engine.getNForInterpolations(node.textContent);
-
-
-            if (interpolations.length === 0) {
-                //Try normal interpolations
-                useDot = false;
-                interpolations = engine.getInterpolationsForInnerText(node.textContent);
-            }
-
-            for (const interpolation of interpolations) {
-
-
-
-                if (useDot) {
-                    node.textContent = node.textContent.replace(interpolation, i[engine.stripAndTrimNForInterpolation(interpolation).split('.')[1]]);
-                } else {
-                    // let stripped = engine.stripAndTrimInterpolation(interpolation);
-                    node.textContent = node.textContent.replace(interpolation, i);
+        element.style.display = "none";
+        function interpolateCustomElement(element, object, descriptor){
+            //Performancewise, we render the whole html element.
+            let html = element.innerHTML; 
+            var interpolations = engine.getInterpolationsFortextContent(html);
+            console.error(interpolations);
+            for(var interpolation of interpolations){
+                var stripped = engine.stripAndTrimInterpolation(interpolation);
+                console.error(stripped)
+                if(object.hasOwnProperty(stripped.split('.')[1])){
+                    html = html.replace(interpolation, object[stripped.split('.')[1]]);
                 }
-
-
             }
-            parent.appendChild(node);
-
+            element.innerHTML = html;
+            
         }
-
-
+        console.error(statemenet);
+        let descriptor = statemenet.split(' ')[1];
+        let arr = statemenet.split(' ')[3];
+        let refArray = eval("state.data." +arr);
+        if(typeof refArray === 'undefined' || refArray === null) return;
+        
+        let parent = element.parentNode;
+        console.error(refArray);
+        for(let i of refArray){
+            let child = document.createElement(element.nodeName);
+            child.innerHTML = element.innerHTML;
+            interpolateCustomElement(child, i, descriptor);
+            parent.appendChild(child);
+        }
+        
     }
     if = function (element, statement, state) {
         let reversed = false;

@@ -41,6 +41,7 @@ class State {
         return element[0];
     }
     stripAndTrimInterpolation(interpolation) {
+        if(typeof interpolation !== 'string') return interpolation;
         interpolation = interpolation.replace('{{', '');
         interpolation = interpolation.replace('}}', '');
         interpolation = interpolation.trim();
@@ -60,18 +61,12 @@ class State {
     }
     findElementsByObject(obj, prop) {
         let elements = [];
-        for (const element of this.activeElements) {            
-            if (this.engine.isForAttribute(element)) {
-                this.disableElementIfNeeded(element[0]);
+        for (const element of this.activeElements) {
+            if (this.stripAndTrimInterpolation(element[3]) === prop) {
                 elements.push(element);
-            } else {
-                if (this.stripAndTrimInterpolation(element[3]) === prop) {
-                    elements.push(element);
-                }
             }
-
         }
-
+        console.error(this.activeElements);
         return elements;
     }
 }

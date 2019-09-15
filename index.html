@@ -15,13 +15,22 @@
         {{ title}} and {{someValue}}</h1>
     <h1>{{test}}</h1>
     <input n-form="test" type="text" value="test">
-    <li>
-        <ul n-for="let post of posts">
-            id: {{post.id}} name: {{post.name}} mail: {{post.email}}
-        </ul>
-    </li>
 
 
+    <table style="width:100%">
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>App Title</th>
+        </tr>
+        <tr n-for="let post of posts" >
+          <td>{{post.id}}</td>
+          <td>{{post.name}}</td>
+          <td>{{post.email}}</td>
+          <td>{{title}}</td> <!--Notice, how the scope does not get affected-->
+        </tr>
+    </table>
 </body>
 <style>
 
@@ -30,17 +39,19 @@
 <script>
     'use strict';
 
-    let nails = new Nails({
+    var nails = new Nails({
         el: "body", //Start with # to specify id
         data: {
             title: "Your Nails App",
-            boolValue: false,
+            boolValue: true,
+            someValue: function(){
+                var val = 1+1;
+                return "1+1 = " +val;
+            },
         },
         methods: {
             onMounted(currentState) {
-                console.log('Hooked to Mounted: Nails is mounted!');
                 get('https://jsonplaceholder.typicode.com/comments', (posts) => {
-                    posts = JSON.parse(posts);
                     currentState.data.posts = posts;
                 });
             }

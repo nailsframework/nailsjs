@@ -20,16 +20,17 @@ class Nails {
         this.engine = new RenderingEngine(this.state);
         this.setUpProxy();
         this.indexDOM();
-        this.state.methods.onMounted(this.state);
         this.engine.setTitle();
-        
+        this.state.methods.onMounted(this.state);
     }
 
     notifyDOM(target, prop, value) {
         var ref = this.state.findElementsByObject(target, prop);
+        console.error('hi, ' + ref)
         if (ref === [] || ref.length === 0) {
             return;
         };
+        
         ref = this.state.getHtmlReferenceOfStateElement(ref);
         this.engine.updateInterpolatedElement(ref[0], ref[2]);
         this.engine.executeDirectivesOnElement(ref);
@@ -66,6 +67,7 @@ class Nails {
             let activeElements = this.engine.indexElement(element);
             //Execute Directives
 
+            //TODO: Manage the activeElements here and not in interpolations
             for (let el of activeElements) {
                 this.engine.executeDirectivesOnElement(el);
             }
