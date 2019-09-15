@@ -4,6 +4,8 @@ NailsFramework or short NailsJS is a newcorner Javascript library.
 
 ```Beware: WORK IN PROCESS. Use at your OWN risk. Changes may occur without further notice, stuff will certainly break``` 
 
+To see whats possible, take a look into the index.html.
+
 # New Features!
 
   - Reactive DOM. Change values in the console and see the magic happen.
@@ -55,7 +57,7 @@ You can add a directive to your element like following:
 All Directives:
 
 ```n-if```: Shows or hides the Element, based on the boolean attribute passed in.
-```n-if```: Generates a field with the name specified in the ```directive``` and updates all elements accordingly.
+```n-for```: Generates a field with the name specified in the ```directive``` and updates all elements accordingly.
 
 
 ... more are following soon.
