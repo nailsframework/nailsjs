@@ -164,9 +164,7 @@ class RenderingEngine {
         return str.replace(/\s/g, "");
     }
     stripAndTrimInterpolation(interpolation) {
-        if(typeof interpolation === 'undefined' || typeof interpolation === null) return interpolation;
-        console.error(interpolation);
-        
+        if(typeof interpolation === 'undefined' || typeof interpolation === null) return interpolation;        
         interpolation = interpolation.replace('{{', '');
         interpolation = interpolation.replace('}}', '');
         interpolation = interpolation.trim();
@@ -214,8 +212,6 @@ class RenderingEngine {
         return true;
     }
     updateInterpolatedElement(ref, originalText) {
-        console.error('Updating element is type of: ' + ref.nodeType);
-        console.error(ref)
         this.executeDirectivesOnElement(ref);
         let interpolations = this.getInterpolationsFortextContent(originalText);
         if (interpolations.length === 0) return;

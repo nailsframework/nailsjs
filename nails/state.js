@@ -66,7 +66,6 @@ class State {
                 elements.push(element);
             }
         }
-        console.error(this.activeElements);
         return elements;
     }
 }

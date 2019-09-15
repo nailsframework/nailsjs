@@ -7,16 +7,22 @@
     <script src="nails/engine.js"></script>
     <script src="nails/nails.js"></script>
     <script src="nails/api.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
 
 </head>
 
-<body>
-    <h1 n-if="boolValue">I am here if boolValue is true, actually it is {{boolValue}} btw, next follows our app title
-        {{ title}} and {{someValue}}</h1>
-    <h1>{{test}}</h1>
-    <input n-form="test" type="text" value="test">
+<body class="animated fadeIn" >
+    <h1 class="animated jackInTheBox" n-if="boolValue">I am here if boolValue is true</h1>
+    <h1>We even support dynamic properties, like {{dynamic}}</h1>
+    <div>
+        <h2>Try typing something in the Textbox. (2 Way Data binding)</h2>
+        <p>{{test}}</p>
+        <input n-form="test" type="text" value="">
+    </div>
+    
 
-
+    <h2>And whats that, smells like integrated for loops for DOM Manipulations</h2>
     <table style="width:100%">
         <tr>
           <th>Id</th>
@@ -32,6 +38,10 @@
         </tr>
     </table>
 </body>
+
+<span>
+    Make Web Developement faster and less painfull. Get startet today with {{ whoami }}
+</span>
 <style>
 
 </style>
@@ -44,10 +54,10 @@
         data: {
             title: "Your Nails App",
             boolValue: true,
-            someValue: function(){
-                var val = 1+1;
-                return "1+1 = " +val;
+            dynamic: function(){
+                return "Hello from Dynamic Function";
             },
+            whoami: "NailsJS"
         },
         methods: {
             onInit(){
@@ -58,7 +68,7 @@
             },
             onMounted(currentState) {
                 get('https://jsonplaceholder.typicode.com/comments', (posts) => {
-                    currentState.data.posts = [{id: 1, name: "<img src=x onerror=alert(1)>", email: 1, mail: 1}];
+                    currentState.data.posts = posts;
                 });
             }
         }
