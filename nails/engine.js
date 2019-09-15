@@ -300,6 +300,21 @@ class RenderingEngine {
     isTextNode(element) {
         return element.nodeType === 3;
     }
+    sanitize(string) {
+        if(typeof string !== 'string') return string;
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#x27;',
+            "/": '&#x2F;',
+            "`" : "&grave;"
+        };
+        const reg = /[&<>"'`/]/ig;
+        return string.replace(reg, (match)=>(map[match]));
+      }
+
     executeInerpolationsOnElement(element) {
 
         for (const child of element.childNodes) {

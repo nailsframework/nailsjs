@@ -50,9 +50,15 @@
             },
         },
         methods: {
+            onInit(){
+              console.error('On init called.');
+              // This method is called during early construction of the State. As a result, there no state supplied as an argument.
+              // You may use this, to trigger your own scripts. Beware, that the dom is not rendert at this time, so use OnMounted for any DOM operations.
+                
+            },
             onMounted(currentState) {
                 get('https://jsonplaceholder.typicode.com/comments', (posts) => {
-                    currentState.data.posts = posts;
+                    currentState.data.posts = [{id: 1, name: "<img src=x onerror=alert(1)>", email: 1, mail: 1}];
                 });
             }
         }

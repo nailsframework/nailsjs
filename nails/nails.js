@@ -4,6 +4,9 @@ class Nails {
     state;
     engine;
     constructor(object) {
+        if(typeof object.methods.onInit !== 'undefined'){
+            object.methods.onInit();
+        }
         this.state = new State();
         console.log("NailsJS Created with constructor object: " + JSON.stringify(object));
         if (object.hasOwnProperty('el')) {
@@ -21,12 +24,13 @@ class Nails {
         this.setUpProxy();
         this.indexDOM();
         this.engine.setTitle();
-        this.state.methods.onMounted(this.state);
+        if(typeof this.state.methods.onMounted !== 'undefined'){
+            this.state.methods.onMounted(this.state);
+        }
     }
 
     notifyDOM(target, prop, value) {
         var ref = this.state.findElementsByObject(target, prop);
-        console.error('hi, ' + ref)
         if (ref === [] || ref.length === 0) {
             return;
         };

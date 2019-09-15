@@ -45,25 +45,21 @@ class NailsDirectives {
             //Performancewise, we render the whole html element.
             let html = element.innerHTML; 
             var interpolations = engine.getInterpolationsFortextContent(html);
-            console.error(interpolations);
             for(var interpolation of interpolations){
                 var stripped = engine.stripAndTrimInterpolation(interpolation);
-                console.error(stripped)
                 if(object.hasOwnProperty(stripped.split('.')[1])){
-                    html = html.replace(interpolation, object[stripped.split('.')[1]]);
+                    html =html.replace(interpolation, engine.sanitize(object[stripped.split('.')[1]]));
                 }
             }
             element.innerHTML = html;
             
         }
-        console.error(statemenet);
         let descriptor = statemenet.split(' ')[1];
         let arr = statemenet.split(' ')[3];
         let refArray = eval("state.data." +arr);
         if(typeof refArray === 'undefined' || refArray === null) return;
         
         let parent = element.parentNode;
-        console.error(refArray);
         for(let i of refArray){
             let child = document.createElement(element.nodeName);
             child.innerHTML = element.innerHTML;
