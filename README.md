@@ -6,6 +6,23 @@ NailsFramework or short NailsJS is a newcorner Javascript library.
 
 To see whats possible, take a look into the index.html.
 
+# Why should i use NailsJS?
+
+Nails has been created out of one reason. Frustration.
+Mostly every JS Framework doesn't really scale down for small size project, instead they are horribly 
+slow and space intensive. I dont want to use 300MB disk space for a hello world programm just because
+those nasty dependencies.
+
+And exactly here comes nailsJS into place. It just nails it for small size projects but also perfectly scales up to enterprise solutions,
+altough it's still in developement. The Codebase is about 50KB and thats all. No dependencies, nothing. It just works.
+
+Also there is no learning curve, because to create a wonderfull, reactive WebApp you dont need to learn some complicated stuff.
+NailsJS is designed to be intuitive and easy. 
+To use a Rest API, all you need is for lines of code. You just have to tell nails THREE SIMPLE THINGS: what to fetch, and where and how to embedd it.
+
+Thats it. 
+
+
 # New Features!
 
   - Reactive DOM. Change values in the console and see the magic happen.
