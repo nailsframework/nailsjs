@@ -7,17 +7,19 @@
     <script src="nails/engine.js"></script>
     <script src="nails/nails.js"></script>
     <script src="nails/api.js"></script>
+    <script src="nails/helplers/http.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
 
 </head>
 
 <body class="animated fadeIn" >
-    <h1 class="animated jackInTheBox" n-if="boolValue">I am here if boolValue is true</h1>
+    <h1 class="animated bounce " n-if="boolValue">I am here if boolValue is true</h1>
     <h1>We even support dynamic properties, like {{dynamic}}</h1>
     <div>
         <h2>Try typing something in the Textbox. (2 Way Data binding)</h2>
-        <p>{{test}}</p>
+        <p>So far, you have typed: {{test}}</p>
         <input n-form="test" type="text" value="">
     </div>
     
@@ -29,18 +31,22 @@
           <th>Name</th>
           <th>Email</th>
           <th>App Title</th>
+          <th>Edit</th>
+          <th>Save</th>
         </tr>
         <tr n-for="let post of posts" >
           <td>{{post.id}}</td>
           <td>{{post.name}}</td>
           <td>{{post.email}}</td>
           <td>{{title}}</td> 
+          <td><input type="text" value="{{post.email}}"></td>
+          <td><button id="{{post.id}}">Save {{post.name}}</button></td>
         </tr>
     </table>
 </body>
 
 <span>
-    Make Web Developement faster and less painfull. Get startet today with {{ whoami }}
+    Make Web Developement faster and less painful. Get startet today with {{ whoami }}
 </span>
 <style>
 
@@ -67,6 +73,8 @@
                 
             },
             onMounted(currentState) {
+                var rest = new RestForm({"url": "https://jsonplaceholder.typicode.com/comments", "methods" : ['GET', 'UPDATE', 'DELETE'], "isArray" : true});
+                rest.get();
                 get('https://jsonplaceholder.typicode.com/comments', (posts) => {
                     currentState.data.posts = posts;
                 });

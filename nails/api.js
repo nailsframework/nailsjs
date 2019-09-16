@@ -8,3 +8,4 @@ const get = function(url, callback){
     xmlHttp.open("GET", url, true);
     xmlHttp.send(null);
 }
+
