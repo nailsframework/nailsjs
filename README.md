@@ -2,7 +2,7 @@
 
 NailsFramework or short NailsJS is a newcorner Javascript library.
 
-```Beware: WORK IN PROCESS. Use at your OWN risk. Changes may occur without further notice, stuff will certainly break``` 
+```I'm proud to announce that NailsJS enters the first stable state. You can safetly use it. Please take a look at our Branches to see, what version best suits you``` 
 
 To see whats possible, take a look into the index.html.
 
