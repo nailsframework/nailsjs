@@ -87,9 +87,8 @@ All Directives:
 
 ```n-if```: Shows or hides the Element, based on the boolean attribute passed in.
 ```n-for```: Generates a field with the name specified in the ```directive``` and updates all elements accordingly.
-
-
-... more are following soon.
+```n-form```: Generates a field in the state which updates when the elements "Text-Node" updates. Then you can use for example
+              <input n-form="username" type="text"> creates state.data.username.
 
 ### Branches
 
