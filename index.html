@@ -34,7 +34,7 @@
           <th>Edit</th>
           <th>Save</th>
         </tr>
-        <tr n-for="let post of posts" >
+        <tr n-for="let post of posts">
           <td>{{post.id}}</td>
           <td>{{post.name}}</td>
           <td>{{post.email}}</td>
@@ -59,7 +59,7 @@
         el: "body", //Start with # to specify id
         data: {
             title: "Your Nails App",
-            boolValue: true,
+            boolValue: false,
             dynamic: function(){
                 return "Hello from Dynamic Function";
             },

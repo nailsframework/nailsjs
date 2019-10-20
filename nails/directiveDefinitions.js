@@ -4,7 +4,7 @@ class NailsDirectives {
 
 
     constructor() {
-        this.directives = ['if', 'form', 'for']
+        this.directives = ['if', 'form', 'for', 'test']
     }
     /*
         A directive exists of an element (string) in the @directives array and a function declaration 
@@ -31,41 +31,53 @@ class NailsDirectives {
         if (element.getAttribute('type') === 'text') {
             state.data[statemenet] = element.value;
         }
-        element.addEventListener("input", function() {
+        element.addEventListener("input", function () {
             state.data[statemenet] = element.value;
         });
 
     }
+  
 
     for(element, statemenet, state) {
+
         var engine = new RenderingEngine(state);
         element.style.display = "none";
-        function interpolateCustomElement(element, object, descriptor){
+        function interpolateCustomElement(element, object, descriptor) {
             //Performancewise, we render the whole html element.
-            var html = element.innerHTML; 
+            var html = element.innerHTML;
             var interpolations = engine.getInterpolationsFortextContent(html);
-            for(var interpolation of interpolations){
+            for (var interpolation of interpolations) {
                 var stripped = engine.stripAndTrimInterpolation(interpolation);
-                if(object.hasOwnProperty(stripped.split('.')[1])){
-                    html =html.replace(interpolation, engine.sanitize(object[stripped.split('.')[1]]));
+                if (object.hasOwnProperty(stripped.split('.')[1])) {
+                    html = html.replace(interpolation, engine.sanitize(object[stripped.split('.')[1]]));
                 }
             }
             element.innerHTML = html;
-            
+
         }
         var descriptor = statemenet.split(' ')[1];
         var arr = statemenet.split(' ')[3];
-        var refArray = eval("state.data." +arr);
-        if(typeof refArray === 'undefined' || refArray === null) return;
-        
+        var refArray = eval("state.data." + arr);
+        if (typeof refArray === 'undefined' || refArray === null) return;
+
         var parent = element.parentNode;
-        for(var i of refArray){
+        if(parent.childNodes.length > 5){
+            console.log('State change?')
+            console.log(parent.childNodes.length)
+        }
+        for (var i of refArray) {
             var child = document.createElement(element.nodeName);
             child.innerHTML = element.innerHTML;
             interpolateCustomElement(child, i, descriptor);
             parent.appendChild(child);
+            for (var i of element.attributes) {
+                if (i.name !== 'n-for' && i.name !== 'style') {
+                    child.setAttribute(i.name, i.value)
+                }
+            }
+            engine.executeDirectivesOnElement(child)
         }
-        
+
     }
     if(element, statement, state) {
         var reversed = false;

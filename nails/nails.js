@@ -6,7 +6,7 @@ class Nails {
             object.methods.onInit();
         }
         this.state = new State();
-        console.log("NailsJS Created with varructor object: " + JSON.stringify(object));
+        console.log("NailsJS Created with constructor object: " + JSON.stringify(object));
         if (object.hasOwnProperty('el')) {
             this.state.element = object.el;
         } else {

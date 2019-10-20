@@ -10,7 +10,14 @@ class RenderingEngine {
         this.directives = new NailsDirectives();
 
     }
-    
+   
+    insert = function (index, string, ref) {
+        if (index > 0)
+          return ref.substring(0, index) + string + ref.substring(index, ref.length);
+      
+        return string + ref;
+      };
+      
 
     setTitle() {
         if (typeof this.state.data.title !== 'undefined' || this.state.data.title === null) {
@@ -99,7 +106,7 @@ class RenderingEngine {
         for (var directive of directives) {
             directive = this.removePrefix(directive);
             if (directive in this.directives) {
-                this.directives[directive](element, this.getElementAttributeForDirective(element, directive), this.state)
+                this.directives[ directive](element, this.getElementAttributeForDirective(element, directive), this.state)
             } else {
                 console.warn('not found directive: ' + directive)
             }
