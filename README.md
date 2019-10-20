@@ -38,10 +38,12 @@ NailsJS / Nailsframework has no dependencies.
 You may clone the Nails Project direct into your Project or use a CDN.
 Insert follwing code into your HTML head.
 ```
-<script src="nails/directiveDefinitions.js"></script>
-<script src="nails/state.js"></script>
-<script src="nails/engine.js"></script>
-<script src="nails/nails.js"></script>
+ <script src="nails/directiveDefinitions.js"></script>
+  <script src="nails/state.js"></script>
+  <script src="nails/engine.js"></script>
+  <script src="nails/nails.js"></script>
+  <script src="nails/api.js"></script>
+
 ```
 
 Create a new Nails instance with:
@@ -51,6 +53,14 @@ let nails = new Nails({
         el: "body",
         data: {
             title: "Your Nails App",
+        },
+        methods: {
+            onInit() => {
+
+            },
+            onMounted() => {
+
+            }
         }
 });
 ````
@@ -58,6 +68,8 @@ let nails = new Nails({
 ```el```: The Element which nailsjs uses as entry point. You may specify an ID with an preceeding # or directly specify an HTML element. Beware, that if nails finds more than one element, it refuses to bootstrap itself.
 ```data```: Here you can specify your inital Data. This step is not mandatory. 
 ```data.title```: The title attribute will specify the title of your document.
+```methods```: Here you need to define two Methods. First onInit and secondly onMounted. OnInit is called as soon NailsJS is about to bootstrap itself. Here you might define scripts, who need to have a clean DOM and do not rely on the State.
+OnMounted is called after the DOM is fully rendered and the State object has been crafted. Mostly you need to use OnMounted. However, you MUST define both methods.
 
 ### Directives
 
