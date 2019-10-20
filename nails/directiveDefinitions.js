@@ -27,17 +27,22 @@ class NailsDirectives {
         DONT PREFIX YOUR DIRECTIVE AND FUNCTIONS WITH AN N
     */
 
-    form(element, statemenet, state) {
+    form(element, statement, state) {
         if (element.getAttribute('type') === 'text') {
-            state.data[statemenet] = element.value;
+            if (state.data[statement] !== element.value) {
+                state.data[statement] = element.value;
+            }
         }
         element.addEventListener("input", function () {
-            state.data[statemenet] = element.value;
+            if (state.data[statement] !== element.value) {
+                state.data[statement] = element.value;
+
+            }
         });
 
     }
-  
-    
+
+
 
     for(element, statemenet, state) {
 
@@ -62,7 +67,7 @@ class NailsDirectives {
         if (typeof refArray === 'undefined' || refArray === null) return;
 
         var parent = element.parentNode;
-        if(parent.childNodes.length > 5){
+        if (parent.childNodes.length > 5) {
             console.log('State change?')
             console.log(parent.childNodes.length)
         }
@@ -76,7 +81,7 @@ class NailsDirectives {
                     child.setAttribute(i.name, i.value)
                 }
             }
-            engine.executeDirectivesOnElement(child)
+            engine.executeDirectivesOnElement(child, true)
         }
 
     }

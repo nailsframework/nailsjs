@@ -10,14 +10,14 @@ class RenderingEngine {
         this.directives = new NailsDirectives();
 
     }
-   
+
     insert = function (index, string, ref) {
         if (index > 0)
-          return ref.substring(0, index) + string + ref.substring(index, ref.length);
-      
+            return ref.substring(0, index) + string + ref.substring(index, ref.length);
+
         return string + ref;
-      };
-      
+    };
+
 
     setTitle() {
         if (typeof this.state.data.title !== 'undefined' || this.state.data.title === null) {
@@ -54,8 +54,10 @@ class RenderingEngine {
             return false;
         }
     }
+
     isActiveElement(element) {
         return this.getElementDirectives(element).length > 0;
+
     }
 
     removePrefix(directive) {
@@ -101,12 +103,18 @@ class RenderingEngine {
             return '';
         }
     }
-    executeDirectivesOnElement(element) {
+    executeDirectivesOnElement(element, add) {
         var directives = this.getElementDirectives(element);
         for (var directive of directives) {
             directive = this.removePrefix(directive);
             if (directive in this.directives) {
-                this.directives[ directive](element, this.getElementAttributeForDirective(element, directive), this.state)
+                this.directives[directive](element, this.getElementAttributeForDirective(element, directive), this.state)
+                var directives = this.getElementDirectives(element);
+                if(add){
+                    for (var dir of directives) {
+                        this.state.addActiveDirectiveElement(dir, element.getAttribute(dir), element)
+                    }
+                }
             } else {
                 console.warn('not found directive: ' + directive)
             }
@@ -171,7 +179,7 @@ class RenderingEngine {
         return str.replace(/\s/g, "");
     }
     stripAndTrimInterpolation(interpolation) {
-        if(typeof interpolation === 'undefined' || typeof interpolation === null) return interpolation;        
+        if (typeof interpolation === 'undefined' || typeof interpolation === null) return interpolation;
         interpolation = interpolation.replace('{{', '');
         interpolation = interpolation.replace('}}', '');
         interpolation = interpolation.trim();
@@ -219,7 +227,7 @@ class RenderingEngine {
         return true;
     }
     updateInterpolatedElement(ref, originalText) {
-        this.executeDirectivesOnElement(ref);
+        this.executeDirectivesOnElement(ref, false);
         var interpolations = this.getInterpolationsFortextContent(originalText);
         if (interpolations.length === 0) return;
         var interpolatedText = originalText;
@@ -233,7 +241,7 @@ class RenderingEngine {
             interpolatedText = interpolatedText.replace(interpolation, value);
         }
 
-        
+
 
 
         ref.textContent = interpolatedText;
@@ -304,7 +312,7 @@ class RenderingEngine {
         return element.nodeType === 3;
     }
     sanitize(string) {
-        if(typeof string !== 'string') return string;
+        if (typeof string !== 'string') return string;
         var map = {
             '&': '&amp;',
             '<': '&lt;',
@@ -312,11 +320,11 @@ class RenderingEngine {
             '"': '&quot;',
             "'": '&#x27;',
             "/": '&#x2F;',
-            "`" : "&grave;"
+            "`": "&grave;"
         };
         var reg = /[&<>"'`/]/ig;
-        return string.replace(reg, function(match){(map[match])});
-      }
+        return string.replace(reg, function (match) { (map[match]) });
+    }
 
     executeInerpolationsOnElement(element) {
 
@@ -345,7 +353,7 @@ class RenderingEngine {
             this.interpolateElement(element, interpolations);
         } else {
             //Special case: Nfor. We do have to add them, but if this else getts extended for some reason, reconsider this.
-            if(!this.isNForActivated(element)) return;
+            if (!this.isNForActivated(element)) return;
 
             var interpolation = "{{" + element.getAttribute('n-for').split(' ')[3] + "}}"
             this.state.addActiveElement(element, element.getAttribute('n-for').split(' ')[3], null, interpolation);

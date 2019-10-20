@@ -2,7 +2,7 @@
 
 class Nails {
     constructor(object) {
-        if(typeof object.methods.onInit !== 'undefined'){
+        if (typeof object.methods.onInit !== 'undefined') {
             object.methods.onInit();
         }
         this.state = new State();
@@ -15,7 +15,7 @@ class Nails {
         if (object.hasOwnProperty('data')) {
             this.state.data = object.data;
         }
-        if(object.hasOwnProperty('methods')){
+        if (object.hasOwnProperty('methods')) {
             this.state.methods = object.methods;
         }
 
@@ -23,24 +23,36 @@ class Nails {
         this.setUpProxy();
         this.indexDOM();
         this.engine.setTitle();
-        this.state.methods.getState = function(){
-            return  this.state;
+        this.state.methods.getState = function () {
+            return this.state;
         }
-        if(typeof this.state.methods.onMounted !== 'undefined'){
+        if (typeof this.state.methods.onMounted !== 'undefined') {
             this.state.methods.onMounted(this.state);
-            
+
         }
     }
 
     notifyDOM(target, prop, value) {
-        var ref = this.state.findElementsByObject(target, prop);
-        if (ref === [] || ref.length === 0) {
+
+        var refs = this.state.findElementsByObject(target, prop);
+        if (refs === [] || refs.length === 0) {
             return;
         };
+        for(var ref of refs){
+            if(ref.hasOwnProperty('key')){
+                this.engine.executeDirectivesOnElement(ref.element, false);
+            }else{
+                var htmlRef = this.state.getHtmlReferenceOfStateElement(ref);
+
+                this.engine.updateInterpolatedElement(ref[0], ref[2]);
+                this.engine.executeDirectivesOnElement(ref, false);
+            }
         
-        ref = this.state.getHtmlReferenceOfStateElement(ref);
-        this.engine.updateInterpolatedElement(ref[0], ref[2]);
-        this.engine.executeDirectivesOnElement(ref);
+        }
+      
+
+
+
         return true;
     };
     indexDOM() {
@@ -76,7 +88,7 @@ class Nails {
 
             //TODO: Manage the activeElements here and not in interpolations
             for (var el of activeElements) {
-                this.engine.executeDirectivesOnElement(el);
+                this.engine.executeDirectivesOnElement(el, true);
             }
             this.engine.executeInerpolationsOnElement(element);
         }

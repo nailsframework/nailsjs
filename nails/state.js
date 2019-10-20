@@ -1,7 +1,7 @@
 'use strict';
 
 class State {
- 
+
     getInstance() {
         if (this.instance === null) {
             this.instance = new State();
@@ -11,8 +11,22 @@ class State {
     constructor() {
         this.data = {};
         this.activeElements = [];
+        this.activeDirectiveElements = [];
         this.engine = new RenderingEngine(this);
         this.disabledElements = []
+
+    }
+    addActiveDirectiveElement(key, statement, element) {
+        
+        for (var el of this.activeDirectiveElements) {
+            if (el.key === key && el.statement === statement && el.element === element){
+                console.warn('refusing to insert element');
+                return;
+            }
+        }
+        
+
+        this.activeDirectiveElements.push({ key, statement, element })
 
     }
 
@@ -37,7 +51,7 @@ class State {
         return element[0];
     }
     stripAndTrimInterpolation(interpolation) {
-        if(typeof interpolation !== 'string') return interpolation;
+        if (typeof interpolation !== 'string') return interpolation;
         interpolation = interpolation.replace('{{', '');
         interpolation = interpolation.replace('}}', '');
         interpolation = interpolation.trim();
@@ -62,6 +76,18 @@ class State {
                 elements.push(element);
             }
         }
+
+        for (var element of this.activeDirectiveElements) {
+
+            prop = prop.replace('!', '');
+            element.statement = element.statement.replace('!', '');
+            if (this.stripAndTrimInterpolation(element.statement) === prop) {
+                elements.push(element);
+            }
+        }
+
+
+
         return elements;
     }
 }
