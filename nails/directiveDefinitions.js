@@ -37,6 +37,7 @@ class NailsDirectives {
 
     }
   
+    
 
     for(element, statemenet, state) {
 

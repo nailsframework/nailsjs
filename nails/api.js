@@ -1,11 +1,17 @@
 
-var get = function(url, callback){
+var get = function(url, state, callback){
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(JSON.parse(xmlHttp.responseText));
-    }
     xmlHttp.open("GET", url, true);
+
+    if(typeof state.data.headers !== 'undefined'){
+        for(var header of state.data.headers){
+            xmlHttp.setRequestHeader(Object.keys(header)[0], header[Object.keys(header).pop()])
+        }
+    }
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4)
+            callback(JSON.parse(xmlHttp.responseText), xmlHttp.status);
+    }
     xmlHttp.send(null);
 }
 

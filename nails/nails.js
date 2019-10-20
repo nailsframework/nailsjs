@@ -18,12 +18,17 @@ class Nails {
         if(object.hasOwnProperty('methods')){
             this.state.methods = object.methods;
         }
+
         this.engine = new RenderingEngine(this.state);
         this.setUpProxy();
         this.indexDOM();
         this.engine.setTitle();
+        this.state.methods.getState = function(){
+            return  this.state;
+        }
         if(typeof this.state.methods.onMounted !== 'undefined'){
             this.state.methods.onMounted(this.state);
+            
         }
     }
 
