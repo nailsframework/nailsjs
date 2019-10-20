@@ -75,7 +75,7 @@
             onMounted(currentState) {
                 var rest = new RestForm({"url": "https://jsonplaceholder.typicode.com/comments", "methods" : ['GET', 'UPDATE', 'DELETE'], "isArray" : true});
                 rest.get();
-                get('https://jsonplaceholder.typicode.com/comments', (posts) => {
+                get('https://jsonplaceholder.typicode.com/comments', function(posts) {
                     currentState.data.posts = posts;
                 });
             }

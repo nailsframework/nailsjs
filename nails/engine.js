@@ -1,8 +1,7 @@
 'use strict';
 
 class RenderingEngine {
-    state;
-    directives;
+
     constructor(state) {
         if (typeof state === 'undefined' || state === null) {
             console.log("Engine was initialized without a state");
@@ -11,6 +10,7 @@ class RenderingEngine {
         this.directives = new NailsDirectives();
 
     }
+    
 
     setTitle() {
         if (typeof this.state.data.title !== 'undefined' || this.state.data.title === null) {
@@ -23,7 +23,7 @@ class RenderingEngine {
 
     disableInterpolationForVariableNameOnElement(name, element) {
         if (typeof name === 'undefined' || typeof element === 'undefined') return;
-        for (let el of this.state.disabledElements) {
+        for (var el of this.state.disabledElements) {
             if (el[0] == name && el[1] == element) {
                 return;
             }
@@ -61,8 +61,8 @@ class RenderingEngine {
         if (typeof element === 'undefined') {
             return [];
         }
-        let directives = [];
-        for (let directive of this.directives.directives) {
+        var directives = [];
+        for (var directive of this.directives.directives) {
             directive = this.prefixDiretive(directive);
             if ('hasAttribute' in element && element.hasAttribute(directive)) {
                 directives.push(directive);
@@ -73,9 +73,9 @@ class RenderingEngine {
 
     indexElement(element) {
         this.state.disableElementIfNeeded(element);
-        let activeElements = [];
-        for (let child of element.childNodes) {
-            let active = this.indexElement(child);
+        var activeElements = [];
+        for (var child of element.childNodes) {
+            var active = this.indexElement(child);
             activeElements.push.apply(activeElements, active);
         }
         if (this.isActiveElement(element)) {
@@ -96,7 +96,7 @@ class RenderingEngine {
     }
     executeDirectivesOnElement(element) {
         var directives = this.getElementDirectives(element);
-        for (let directive of directives) {
+        for (var directive of directives) {
             directive = this.removePrefix(directive);
             if (directive in this.directives) {
                 this.directives[directive](element, this.getElementAttributeForDirective(element, directive), this.state)
@@ -117,11 +117,11 @@ class RenderingEngine {
     }
 
     getNForInterpolations(content) {
-        const interpolations = [];
+        var interpolations = [];
         content = content.trim();
         var matches = content.match(/\[\[\[(( +)?\w+.?\w+( +)?)\]\]\]/g);
         if (matches === null) return interpolations;
-        for (const match of matches) {
+        for (var match of matches) {
             interpolations.push(match);
         }
 
@@ -171,12 +171,12 @@ class RenderingEngine {
         return interpolation;
     }
     getInterpolationsFortextContent(text) {
-        const interpolations = [];
+        var interpolations = [];
         if (typeof text === 'undefined' || text === null) return interpolations;
         //text may come in this format 'hi, this is {{test}} and this is {{abc}}'
         var matches = text.match(/{{(( +)?\w+.?\w+( +)?)}}/g);
         if (matches === null) return [];
-        for (let match of matches) {
+        for (var match of matches) {
             interpolations.push(match);
         }
         return interpolations;
@@ -195,7 +195,7 @@ class RenderingEngine {
         }
         if (node.childNodes.length === 0) return null;
         if (this.nodeHasTextNodeAsADirectChild(node)) {
-            for (let child of node.childNodes) {
+            for (var child of node.childNodes) {
                 if (this.getContentOfNodeIfTextNodeExists(child) !== null) {
                     return this.getContentOfNodeIfTextNodeExists(child);
                 }
@@ -213,11 +213,11 @@ class RenderingEngine {
     }
     updateInterpolatedElement(ref, originalText) {
         this.executeDirectivesOnElement(ref);
-        let interpolations = this.getInterpolationsFortextContent(originalText);
+        var interpolations = this.getInterpolationsFortextContent(originalText);
         if (interpolations.length === 0) return;
-        let interpolatedText = originalText;
-        for (let interpolation of interpolations) {
-            const value = this.getValueOfInterpolation(interpolation);
+        var interpolatedText = originalText;
+        for (var interpolation of interpolations) {
+            var value = this.getValueOfInterpolation(interpolation);
 
             if (this.isElementDisabled(this.stripAndTrimInterpolation(interpolation), ref)) {
                 continue;
@@ -245,7 +245,7 @@ class RenderingEngine {
     }
 
     isElementDisabled(name, element) {
-        for (let disabled of this.state.disabledElements) {
+        for (var disabled of this.state.disabledElements) {
 
             if (this.isDescendant(element, disabled[1]) || this.isDescendant(disabled[1], element)) {
                 if (name.includes(disabled[0])) return true; //Edge case, we have a f***ing scope
@@ -258,9 +258,9 @@ class RenderingEngine {
     }
     interpolateElement(element, interpolations) {
 
-        for (let interpolation of interpolations) {
+        for (var interpolation of interpolations) {
             this.state.disableElementIfNeeded(element);
-            let value = this.getValueOfInterpolation(interpolation);
+            var value = this.getValueOfInterpolation(interpolation);
             if (this.isElementDisabled(this.stripAndTrimInterpolation(interpolation).trim(), element)) {
                 continue;
             }
@@ -286,7 +286,7 @@ class RenderingEngine {
     }
 
     nodeHasTextNodeAsADirectChild(element) {
-        for (let child of element.childNodes) {
+        for (var child of element.childNodes) {
             if (child.nodeType === 3) {
                 return true;
             }
@@ -298,7 +298,7 @@ class RenderingEngine {
     }
     sanitize(string) {
         if(typeof string !== 'string') return string;
-        const map = {
+        var map = {
             '&': '&amp;',
             '<': '&lt;',
             '>': '&gt;',
@@ -307,17 +307,17 @@ class RenderingEngine {
             "/": '&#x2F;',
             "`" : "&grave;"
         };
-        const reg = /[&<>"'`/]/ig;
-        return string.replace(reg, (match)=>(map[match]));
+        var reg = /[&<>"'`/]/ig;
+        return string.replace(reg, function(match){(map[match])});
       }
 
     executeInerpolationsOnElement(element) {
 
-        for (const child of element.childNodes) {
+        for (var child of element.childNodes) {
             this.executeInerpolationsOnElement(child);
         }
 
-        const interpolations = this.getInterpolationsFortextContent(element.nodeValue);
+        var interpolations = this.getInterpolationsFortextContent(element.nodeValue);
 
         if (this.isTextNode(element)) {
             //Interpolation should only happen on a text node. Otherwise, DOM may be damaged. 

@@ -2,7 +2,6 @@
 
 class NailsDirectives {
 
-    directives;
 
     constructor() {
         this.directives = ['if', 'form', 'for']
@@ -19,7 +18,7 @@ class NailsDirectives {
         what has been declaired.
         sample arguments
         element = h1 reference
-        statement = let object of objects
+        statement = var object of objects
         state = current state
 
         For reactivness, only use elements in the data object within the state, as these
@@ -28,22 +27,22 @@ class NailsDirectives {
         DONT PREFIX YOUR DIRECTIVE AND FUNCTIONS WITH AN N
     */
 
-    form = function (element, statemenet, state) {
+    form(element, statemenet, state) {
         if (element.getAttribute('type') === 'text') {
             state.data[statemenet] = element.value;
         }
-        element.addEventListener("input", () => {
+        element.addEventListener("input", function() {
             state.data[statemenet] = element.value;
         });
 
     }
 
-    for = function (element, statemenet, state) {
-        let engine = new RenderingEngine(state);
+    for(element, statemenet, state) {
+        var engine = new RenderingEngine(state);
         element.style.display = "none";
         function interpolateCustomElement(element, object, descriptor){
             //Performancewise, we render the whole html element.
-            let html = element.innerHTML; 
+            var html = element.innerHTML; 
             var interpolations = engine.getInterpolationsFortextContent(html);
             for(var interpolation of interpolations){
                 var stripped = engine.stripAndTrimInterpolation(interpolation);
@@ -54,22 +53,22 @@ class NailsDirectives {
             element.innerHTML = html;
             
         }
-        let descriptor = statemenet.split(' ')[1];
-        let arr = statemenet.split(' ')[3];
-        let refArray = eval("state.data." +arr);
+        var descriptor = statemenet.split(' ')[1];
+        var arr = statemenet.split(' ')[3];
+        var refArray = eval("state.data." +arr);
         if(typeof refArray === 'undefined' || refArray === null) return;
         
-        let parent = element.parentNode;
-        for(let i of refArray){
-            let child = document.createElement(element.nodeName);
+        var parent = element.parentNode;
+        for(var i of refArray){
+            var child = document.createElement(element.nodeName);
             child.innerHTML = element.innerHTML;
             interpolateCustomElement(child, i, descriptor);
             parent.appendChild(child);
         }
         
     }
-    if = function (element, statement, state) {
-        let reversed = false;
+    if(element, statement, state) {
+        var reversed = false;
         if (statement[0] === '!') {
             statement = statement.substring(1);
             reversed = true;

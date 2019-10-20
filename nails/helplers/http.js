@@ -1,10 +1,7 @@
 class RestForm {
-    url;
-    data; //Will be called as JSON.Stringify(data);
-    methods;
-    isArray;
-    xhr = new XMLHttpRequest(); // the constructor has no arguments
     constructor(object) {
+        this.xhr = new XMLHttpRequest(); // the constructor has no arguments
+
         if (object.hasOwnProperty("methods")) {
             if (Array.isArray(object.methods)) {
                 for (let methode of object.methods) {

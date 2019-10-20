@@ -1,14 +1,12 @@
 'use strict';
 
 class Nails {
-    state;
-    engine;
     constructor(object) {
         if(typeof object.methods.onInit !== 'undefined'){
             object.methods.onInit();
         }
         this.state = new State();
-        console.log("NailsJS Created with constructor object: " + JSON.stringify(object));
+        console.log("NailsJS Created with varructor object: " + JSON.stringify(object));
         if (object.hasOwnProperty('el')) {
             this.state.element = object.el;
         } else {
@@ -40,11 +38,11 @@ class Nails {
         this.engine.executeDirectivesOnElement(ref);
         return true;
     };
-    indexDOM = function () {
+    indexDOM() {
         if (typeof this.state.element !== 'undefined') {
-            let element = null;
+            var element = null;
             if (this.state.element.startsWith('#')) {
-                const selector = this.state.element.substr(1);
+                var selector = this.state.element.substr(1);
                 element = document.getElementById(selector);
             } else {
                 element = document.getElementsByTagName(this.state.element);
@@ -68,18 +66,18 @@ class Nails {
 
 
             //From now on, we need to loop through all elements
-            let activeElements = this.engine.indexElement(element);
+            var activeElements = this.engine.indexElement(element);
             //Execute Directives
 
             //TODO: Manage the activeElements here and not in interpolations
-            for (let el of activeElements) {
+            for (var el of activeElements) {
                 this.engine.executeDirectivesOnElement(el);
             }
             this.engine.executeInerpolationsOnElement(element);
         }
     }
     setUpProxy() {
-        const handler = {
+        var handler = {
             state: this.state,
             notifyDom: this.notifyDOM,
             engine: this.engine,
@@ -95,7 +93,7 @@ class Nails {
             }
         };
 
-        const proxy = new Proxy(this.state.data, handler);
+        var proxy = new Proxy(this.state.data, handler);
         this.state.data = proxy;
     };
 
