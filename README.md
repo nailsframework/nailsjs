@@ -55,10 +55,10 @@ let nails = new Nails({
             title: "Your Nails App",
         },
         methods: {
-            onInit() => {
+            onInit() {
 
             },
-            onMounted() => {
+            onMounted()  {
 
             }
         }
