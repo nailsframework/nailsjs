@@ -36,7 +36,7 @@ Thats it.
 NailsJS / Nailsframework has no dependencies. 
 
 You may clone the Nails Project direct into your Project or use a CDN.
-Insert follwing code into your HTML head.
+Insert following code into your HTML head.
 ```
  <script src="nails/directiveDefinitions.js"></script>
   <script src="nails/state.js"></script>
@@ -65,15 +65,15 @@ let nails = new Nails({
 });
 ````
 
-```el```: The Element which nailsjs uses as entry point. You may specify an ID with an preceeding # or directly specify an HTML element. Beware, that if nails finds more than one element, it refuses to bootstrap itself.
-```data```: Here you can specify your inital Data. This step is not mandatory. 
+```el```: The Element which NailsJS uses as entry point. You may specify an ID with an preceding # or directly specify an HTML element. Beware, that if nails finds more than one element, it refuses to bootstrap itself.
+```data```: Here you can specify your initial Data. This step is not mandatory. 
 ```data.title```: The title attribute will specify the title of your document.
 ```methods```: Here you need to define two Methods. First onInit and secondly onMounted. OnInit is called as soon NailsJS is about to bootstrap itself. Here you might define scripts, who need to have a clean DOM and do not rely on the State.
 OnMounted is called after the DOM is fully rendered and the State object has been crafted. Mostly you need to use OnMounted. However, you MUST define both methods.
 
 ### Directives
 
-Hell, yeah. NailsJS supports directives. If you want to add your custom ones, please refer to the section ```Developement```.
+Hell, yeah. NailsJS supports directives. If you want to add your custom ones, please refer to the section ```Development```.
 
 You can add a directive to your element like following:
 
@@ -99,7 +99,7 @@ All Directives:
 | ------------- |:-------------:  |
 | master      | The most stable version|
 | develop     | Not really unstable, but bugs may occur.      |
-| feature/* | For your own safety, and for the safety of your project, dont touch any of these.     |
+| feature/* | For your own safety, and for the safety of your project, don't touch any of these.     |
 
 
 ### Development
@@ -107,7 +107,7 @@ All Directives:
 Want to contribute? Great!
 
 To create new directives simply add your function definition in ```directiveDefinitions.js``` and make sure
-that you added your definition in the ```directives``` array aswell.
+that you added your definition in the ```directives``` array as well.
 
 Do not prefix your function and your array entry with an n, as this is done by the NailsJS Library.
 
