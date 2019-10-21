@@ -30,7 +30,7 @@ Thats it.
   - Directives
   - Intelligent DOM Rendering, does not re-render whole DOM but only the parts, which 
     have changed. This improves stability and performance.
-  - Build from Ground up for Reactivness. No setState or other method calls required
+  - Build from Ground up for Reactivity. No setState or other method calls required
 ### Installation
 
 NailsJS / Nailsframework has no dependencies. 
