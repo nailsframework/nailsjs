@@ -48,7 +48,7 @@ Insert following code into your HTML head.
 
 Create a new Nails instance with:
 
-```
+```js
 let nails = new Nails({
         el: "body",
         data: {
@@ -63,7 +63,7 @@ let nails = new Nails({
             }
         }
 });
-````
+```
 
 ```el```: The Element which NailsJS uses as entry point. You may specify an ID with an preceding # or directly specify an HTML element. Beware, that if nails finds more than one element, it refuses to bootstrap itself.
 ```data```: Here you can specify your initial Data. This step is not mandatory. 
