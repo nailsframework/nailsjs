@@ -33,7 +33,7 @@ Thats it.
   - Build from Ground up for Reactivity. No setState or other method calls required
 ### Installation
 
-NailsJS / Nailsframework has no dependencies. 
+NailsJS / NailsFramework has no dependencies. 
 
 You may clone the Nails Project direct into your Project or use a CDN.
 Insert following code into your HTML head.
