@@ -37,7 +37,7 @@ NailsJS / NailsFramework has no dependencies.
 
 You may clone the Nails Project direct into your Project or use a CDN.
 Insert following code into your HTML head.
-```
+```html
  <script src="nails/directiveDefinitions.js"></script>
   <script src="nails/state.js"></script>
   <script src="nails/engine.js"></script>
