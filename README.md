@@ -1,6 +1,6 @@
 # NailsFramework
 
-NailsFramework or short NailsJS is a newcorner Javascript library.
+NailsFramework or short NailsJS is a new Javascript library.
 
 ```I'm proud to announce that NailsJS enters the first stable state. You can safely use it. Please take a look at our Branches to see, what version best suits you``` 
 
