@@ -49,7 +49,7 @@ Insert following code into your HTML head.
 for the CDN:
 
 ```html
- <script src="https://gitcdn.xyz/repo/nailsframework/nails/master/nails/nails.min.js"></script>
+ <script src="https://rawcdn.githack.com/nailsframework/nails/6b06383993ed0910d53322a82d3edd54f36056cd/nails/nails.min.js"></script>
 
 ```
 Create a new Nails instance with:
