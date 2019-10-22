@@ -165,22 +165,27 @@ class RenderingEngine {
     getValueOfInterpolation(interpolation) {
         // This comes in the format of {{ interpolation }}
         interpolation = interpolation.trim();
-        if (interpolation.match(/{{(( +)?\w+.?\w+( +)?)}}/g)) {
+        if (interpolation.match(/{{(\w?.?)+}}/g)) {
             interpolation = this.stripAndTrimInterpolation(interpolation);
+
         } else {
             console.warn('Not found interpolation in submitted value: ' + interpolation);
             return interpolation;
         }
         interpolation = interpolation.trim();
-        if (interpolation.split('.').length > 1) {
-            //Worst case, user uses somehting like
-            // object.attribute.item.prop;
-            // we need to handle that.
-            return "[[[" + interpolation + "]]]";
-            return eval('this.state.data.' + interpolation); // TODO: Better and safer way
-        } else {
-            return this.state.data[interpolation];
+        var stripped = this.stripAndTrimInterpolation(interpolation);
+
+        var args = stripped.split('.');
+        stripped = '';
+        for (var arg of args) {
+            stripped += arg + '.'
         }
+        console.log(this.state.data.name)
+        stripped = stripped.substring(0, stripped.length - 1);
+        if(typeof this.state.data[stripped.split('.')[0]] === 'undefined'){
+            return 'undefined' //This saves us from from crashing when user tries to user data.key.subkey where data.key is not defined. Also leaves n-for alone
+        }
+        return eval('this.state.data.' + stripped);
     }
 
     removeWhiteSpaceFromString(str) {
@@ -197,7 +202,7 @@ class RenderingEngine {
         var interpolations = [];
         if (typeof text === 'undefined' || text === null) return interpolations;
         //text may come in this format 'hi, this is {{test}} and this is {{abc}}'
-        var matches = text.match(/{{(( +)?\w+.?\w+( +)?)}}/g);
+        var matches = text.match(/{{(\w?.?)+}}/g);
         if (matches === null) return [];
         for (var match of matches) {
             interpolations.push(match);

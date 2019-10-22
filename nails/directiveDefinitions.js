@@ -54,9 +54,16 @@ class NailsDirectives {
             var interpolations = engine.getInterpolationsFortextContent(html);
             for (var interpolation of interpolations) {
                 var stripped = engine.stripAndTrimInterpolation(interpolation);
-                if (object.hasOwnProperty(stripped.split('.')[1])) {
-                    html = html.replace(interpolation, engine.sanitize(object[stripped.split('.')[1]]));
-                }
+                    var args = stripped.split('.');
+                    args[0] = '';
+                    stripped = '';
+                    for(var arg of args){
+                        stripped += arg + '.'
+                    }
+                    stripped = stripped.substring(0, stripped.length - 1);
+
+                    html = html.replace(interpolation, engine.sanitize(eval('object'+stripped)));
+                
             }
             element.innerHTML = html;
 
