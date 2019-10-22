@@ -22,7 +22,13 @@ To use a Rest API, all you need is four lines of code. You just have to tell nai
 
 Thats it. 
 
-
+# Migrate from
+### Angular
+  - I would not recommend you to migrate from Angular to Nails unless you are willing to redo your architectute.
+### Vue.js
+-  Migrating from vue .js to Nails is rather easy. Replace Vue with Nails and all v- directives to n-.
+-  
+    
 # New Features!
 
   - Reactive DOM. Change values in the console and see the magic happen.
@@ -136,4 +142,3 @@ MIT
 **Free Software, Hell Yeah!**
 
  * Author: Dominic Järmann
-
