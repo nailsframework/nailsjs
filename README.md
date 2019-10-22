@@ -46,6 +46,12 @@ Insert following code into your HTML head.
 
 ```
 
+for the CDN:
+
+```html
+ <script src="https://gitcdn.xyz/repo/nailsframework/nails/master/nails/nails.min.js"></script>
+
+```
 Create a new Nails instance with:
 
 ```js
