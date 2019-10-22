@@ -24,8 +24,16 @@ class RenderingEngine {
             document.title = this.state.data.title;
         }
     }
+
+    elementCanGetAttribute(element) {
+        return 'getAttribute' in element;
+    }
+
     isNForActivated(element) {
-        return element.getAttribute('n-for') !== null;
+        if (this.elementCanGetAttribute(element)) {
+            return element.getAttribute('n-for') !== null;
+        }
+        return false;
     }
 
     disableInterpolationForVariableNameOnElement(name, element) {
