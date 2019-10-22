@@ -2,54 +2,22 @@
 
 <head>
   <title>{{ title }}</title>
-  <script src="nails/directiveDefinitions.js"></script>
-  <script src="nails/state.js"></script>
-  <script src="nails/engine.js"></script>
-  <script src="nails/nails.js"></script>
-  <script src="nails/api.js"></script>
-  <script src="nails/helplers/http.js"></script>
-
+  <script src="nails/nails.min.js"></script>
+  <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-
+  <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
 
 </head>
 
-<body class="animated fadeIn">
-  <h1 class="animated bounce " n-if="boolValue">I am here if boolValue is true</h1>
-  <h1>We even support dynamic properties, like {{dynamic}}</h1>
-  <div>
-    <h2>Try typing something in the Textbox. (2 Way Data binding)</h2>
-    <p>So far, you have typed: {{test}}</p>
-    <input n-form="test" type="text" value="">
+<body>
+  <div class="image-container bounceInUp animated">
+    <img src='assets/logo.png' height="400" width="400">
   </div>
-
-  <button onclick='nails.state.methods.refresh()'>Get Employees</button>
-
-
-  <h2>And whats that, smells like integrated for loops for DOM Manipulations</h2>
-  <table id="customers">
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>App Title</th>
-      <th>Edit</th>
-      <th>Save</th>
-    </tr>
-    <tr n-for="let post of posts">
-      <td>{{post.id}}</td>
-      <td>{{post.name}}</td>
-      <td>{{post.email}}</td>
-      <td>{{title}}</td>
-      <td><input type="text" value="{{post.email}}""></td>
-          <td><button id=" {{post.id}}" onclick="alert('{{post.email}}')">Save {{post.name}}</button></td>
-    </tr>
-  </table>
+  <h1 onclick="document.location='https://github.com/nailsframework/nails'" class="animated bounceInRight">Visit us on GithUb</h1>
 </body>
-
-<span>
+<footer>
   Make Web Developement faster and less painful. Get startet today with {{ whoami }}
-</span>
+</footer>
 <style>
 
 </style>
@@ -90,60 +58,5 @@
   });
 
 </script>
-
-<style>
-  body {
-    background-color: white;
-  }
-
-  input[type=text] {
-    height: 35px;
-    border: solid 1px;
-    border-color: #4CAF50;
-    padding-left: 20px;
-  }
-
-  button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
-
-
-  #customers {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  #customers td,
-  #customers th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-
-  #customers tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  #customers tr:hover {
-    background-color: #ddd;
-  }
-
-  #customers th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-  }
-</style>
 
 </html>

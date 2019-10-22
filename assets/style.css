@@ -1,0 +1,32 @@
+
+.image-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Oswald', sans-serif;
+
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: #ffffff;
+    background-color: rgb(75, 75, 75);
+    text-align:center;
+    height: 50px;	
+    line-height: 50px;
+    font-size: 80%;
+  }
+
+  h1{
+      color: #555273;
+      text-align: center;
+      cursor: pointer;
+  }
