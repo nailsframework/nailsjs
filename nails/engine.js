@@ -180,7 +180,6 @@ class RenderingEngine {
         for (var arg of args) {
             stripped += arg + '.'
         }
-        console.log(this.state.data.name)
         stripped = stripped.substring(0, stripped.length - 1);
         if(typeof this.state.data[stripped.split('.')[0]] === 'undefined'){
             return 'undefined' //This saves us from from crashing when user tries to user data.key.subkey where data.key is not defined. Also leaves n-for alone

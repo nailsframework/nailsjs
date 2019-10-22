@@ -2,6 +2,7 @@
 
 class Nails {
     constructor(object) {
+        console.log('abcde')
         if (typeof object.methods.onInit !== 'undefined') {
             object.methods.onInit();
         }
@@ -18,9 +19,11 @@ class Nails {
         if (object.hasOwnProperty('methods')) {
             this.state.methods = object.methods;
         }
+        this.state.components = object.components;
 
         this.engine = new RenderingEngine(this.state);
         this.setUpProxy();
+        this.renderComponents();
         this.indexDOM();
         this.engine.setTitle();
         this.state.methods.getState = function () {
@@ -32,24 +35,31 @@ class Nails {
         }
     }
 
+    renderComponents() {
+        if (typeof this.state.components !== 'undefined' && this.state.components !== null) {
+            var html = document.body.innerHTML;
+            for(var component of this.state.components){
+                document.body.innerHTML = html.replace(new RegExp('<' + component.selector + '>', 'g'), component.render());
+            }
+        }
+    }
+
     notifyDOM(target, prop, value) {
 
         var refs = this.state.findElementsByObject(target, prop);
         if (refs === [] || refs.length === 0) {
             return;
         };
-        for(var ref of refs){
-            if(ref.hasOwnProperty('key')){
+        for (var ref of refs) {
+            if (ref.hasOwnProperty('key')) {
                 this.engine.executeDirectivesOnElement(ref.element, false);
-            }else{
-                var htmlRef = this.state.getHtmlReferenceOfStateElement(ref);
-
+            } else {
                 this.engine.updateInterpolatedElement(ref[0], ref[2]);
                 this.engine.executeDirectivesOnElement(ref, false);
             }
-        
+
         }
-      
+
 
 
 
@@ -113,7 +123,7 @@ class Nails {
         var proxy = new Proxy(this.state.data, handler);
         this.state.data = proxy;
     };
-
+    
 
 
 }

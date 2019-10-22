@@ -2,8 +2,12 @@
 
 <head>
   <title>{{ title }}</title>
-  <script src="nails/nails.min.js"></script>
-  <link rel="stylesheet" href="assets/style.css">
+  <script src="nails/directiveDefinitions.js"></script>
+  <script src="nails/state.js"></script>
+  <script src="nails/engine.js"></script>
+  <script src="nails/nails.js"></script>
+  <script src="nails/api.js"></script>
+    <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
   <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
 
@@ -14,15 +18,23 @@
     <img src='assets/logo.png' height="400" width="400">
   </div>
   <a href="https://github.com/nailsframework/nails" class="animated bounceInRight link">Visit us on GitHub</a>
+  <login></login>
+  <login></login>
+  <login></login>
+  <login></login>
+  <login></login>
+
 </body>
+
 <footer>
   Make Web Developement faster and less painful. Get startet today with {{ whoami }}
 </footer>
 <style>
 </style>
 
-<script>
+<script type="module">
   'use strict';
+  import { LoginComponent } from './login.component.js';
   var nails = new Nails({
     el: "body", //Start with # to specify id
     data: {
@@ -41,7 +53,6 @@
       },
       onMounted(currentState) {
         currentState.data.headers = [{ 'Test': 'Value' }];
-        var rest = new RestForm({ "url": "https://jsonplaceholder.typicode.com/comments", "methods": ['GET', 'UPDATE', 'DELETE'], "isArray": true });
       },
       refresh() {
         var state = nails.state;
@@ -50,6 +61,9 @@
         });
       }
     },
+    components: [
+      new LoginComponent()
+    ]
   });
 </script>
 
