@@ -110,7 +110,7 @@ class RenderingEngine {
             if (directive in this.directives) {
                 this.directives[directive](element, this.getElementAttributeForDirective(element, directive), this.state)
                 var directives = this.getElementDirectives(element);
-                if(add){
+                if (add) {
                     for (var dir of directives) {
                         this.state.addActiveDirectiveElement(dir, element.getAttribute(dir), element)
                     }
@@ -313,17 +313,10 @@ class RenderingEngine {
     }
     sanitize(string) {
         if (typeof string !== 'string') return string;
-        var map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#x27;',
-            "/": '&#x2F;',
-            "`": "&grave;"
-        };
-        var reg = /[&<>"'`/]/ig;
-        return string.replace(reg, function (match) { (map[match]) });
+        var temp = document.createElement('div');
+        temp.textContent = string;
+        var san = temp.innerHTML;
+        return san;
     }
 
     executeInerpolationsOnElement(element) {
