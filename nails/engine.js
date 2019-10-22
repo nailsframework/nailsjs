@@ -11,7 +11,7 @@ class RenderingEngine {
 
     }
 
-    insert = function (index, string, ref) {
+    insert(index, string, ref) {
         if (index > 0)
             return ref.substring(0, index) + string + ref.substring(index, ref.length);
 
