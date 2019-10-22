@@ -2,76 +2,55 @@
 
 <head>
   <title>{{ title }}</title>
-  <script src="nails/directiveDefinitions.js"></script>
-  <script src="nails/state.js"></script>
-  <script src="nails/engine.js"></script>
-  <script src="nails/nails.js"></script>
-  <script src="nails/api.js"></script>  <link rel="stylesheet" href="assets/style.css">
+  <script src="nails/nails.min.js"></script>
+  <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
   <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
-  {{test.sec.fucking.yes}}
-  <table style="width:100%">
-    <tr>
-      <th>Name</th>
-      <th>Name</th>
-      <th>Name</th>
-    </tr>
-    <tr n-for="let lappe of display">
-      <td>{{lappe.name}}</td>
-      <td>{{lappe.meta.lappe}}</td>
-      <td>{{lappe.name}}</td>
-    </tr>
-  </table>
+  <div class="image-container bounceInUp animated">
+    <img src='assets/logo.png' height="400" width="400">
+  </div>
+  <a href="https://github.com/nailsframework/nails" class="animated bounceInRight link">Visit us on GitHub</a>
 </body>
 <footer>
   Make Web Developement faster and less painful. Get startet today with {{ whoami }}
 </footer>
 <style>
-
 </style>
 
 <script>
   'use strict';
-
   var nails = new Nails({
     el: "body", //Start with # to specify id
     data: {
       title: "Your Nails App",
-      whoami: "NailsJS",
-      test: {
-        sec: {
-          fucking: {
-            yes : "works!"
-          }
-        }
-      }
-
+      boolValue: false,
+      dynamic: function () {
+        return "Hello from Dynamic Function";
+      },
+      whoami: "NailsJS"
     },
     methods: {
       onInit() {
         console.error('On init called.');
         // This method is called during early construction of the State. As a result, there no state supplied as an argument.
         // You may use this, to trigger your own scripts. Beware, that the dom is not rendert at this time, so use OnMounted for any DOM operations.
-
       },
       onMounted(currentState) {
-        console.log('setting display')
-        currentState.data.display = [
-          {
-            name: "lappe",
-            meta: {
-              lappe: 'many levels are no supported'
-            }
-          }
-        ]
+        currentState.data.headers = [{ 'Test': 'Value' }];
+        var rest = new RestForm({ "url": "https://jsonplaceholder.typicode.com/comments", "methods": ['GET', 'UPDATE', 'DELETE'], "isArray": true });
       },
+      refresh() {
+        var state = nails.state;
+        get('https://jsonplaceholder.typicode.com/comments', state, function (posts) {
+          state.data.posts = posts;
+        });
+      }
     },
   });
-
 </script>
 
 </html>
