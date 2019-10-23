@@ -36,5 +36,7 @@ footer {
     font-size: 30px;
     text-decoration: none;
     display: block;
-    text-align: center;
+    text-align: center;  
+    animation-delay: 0.2s;
+
   }
