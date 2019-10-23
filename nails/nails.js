@@ -36,11 +36,19 @@ class Nails {
     }
 
     renderComponents() {
+        
         if (typeof this.state.components !== 'undefined' && this.state.components !== null) {
             var html = document.body.innerHTML;
-            for(var component of this.state.components){
-                document.body.innerHTML = html.replace(new RegExp('<' + component.selector + '>', 'g'), component.render());
+            var htmlOld = document.body.innerHTML;
+            for(var i = 0; i < 10000; i++){
+                for(var component of this.state.components){
+                    html = html.replace(new RegExp('<' + component.selector + '>', 'g'), component.render());
+                }
+                if(html === htmlOld) break;
+                htmlOld = html;
             }
+            document.body.innerHTML = html
+            
         }
     }
 

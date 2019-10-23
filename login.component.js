@@ -3,7 +3,6 @@ export class LoginComponent{
         this.state = state;
         this.selector = 'login'
     }
-
     
 
     render(){
