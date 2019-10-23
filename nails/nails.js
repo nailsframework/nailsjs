@@ -2,7 +2,6 @@
 
 class Nails {
     constructor(object) {
-        console.log('abcde')
         if (typeof object.methods.onInit !== 'undefined') {
             object.methods.onInit();
         }
@@ -22,9 +21,10 @@ class Nails {
         this.state.components = object.components;
 
         this.engine = new RenderingEngine(this.state);
+        this.componentEngine = new ComponentEngine(this.state, this.engine, this);
         this.setUpProxy();
-        this.renderComponents();
-        this.indexDOM();
+        this.componentEngine.renderComponents();
+        this.engine.indexDOM();
         this.engine.setTitle();
         this.state.methods.getState = function () {
             return this.state;
@@ -35,26 +35,7 @@ class Nails {
         }
     }
 
-    renderComponents() {
-        
-        if (typeof this.state.components !== 'undefined' && this.state.components !== null) {
-            var html = document.body.innerHTML;
-            var htmlOld = document.body.innerHTML;
-            for(var i = 0; i < 10000; i++){
-                for(var component of this.state.components){
-                    if(typeof component.selector === 'undefined'){
-                        console.error('NailsJS component renderer: Selector for component undefined')
-                        continue;
-                    }
-                    html = html.replace(new RegExp('<' + component.selector + '>', 'g'), component.render());
-                }
-                if(html === htmlOld) break;
-                htmlOld = html;
-            }
-            document.body.innerHTML = html
-            
-        }
-    }
+
 
     notifyDOM(target, prop, value) {
 
@@ -72,49 +53,9 @@ class Nails {
 
         }
 
-
-
-
         return true;
     };
-    indexDOM() {
-        if (typeof this.state.element !== 'undefined') {
-            var element = null;
-            if (this.state.element.startsWith('#')) {
-                var selector = this.state.element.substr(1);
-                element = document.getElementById(selector);
-            } else {
-                element = document.getElementsByTagName(this.state.element);
-            }
-
-            if (typeof element === 'undefined' || element === null) {
-                console.error('No element with selector: ' + this.state.element + ' has been found');
-                return;
-            }
-            if (element instanceof HTMLCollection && element.length > 1) {
-                console.error('Multiple choices, try using id if the element tag is not unique. Your Selector was: ' + this.state.element);
-                return;
-            }
-            if (element instanceof HTMLCollection && element.length === 0) {
-                console.error('No element with selector: ' + this.state.element + ' has been found');
-                return;
-            }
-            if (element instanceof HTMLCollection) {
-                element = element[0];
-            }
-
-
-            //From now on, we need to loop through all elements
-            var activeElements = this.engine.indexElement(element);
-            //Execute Directives
-
-            //TODO: Manage the activeElements here and not in interpolations
-            for (var el of activeElements) {
-                this.engine.executeDirectivesOnElement(el, true);
-            }
-            this.engine.executeInerpolationsOnElement(element);
-        }
-    }
+    
     setUpProxy() {
         var handler = {
             state: this.state,
@@ -135,7 +76,7 @@ class Nails {
         var proxy = new Proxy(this.state.data, handler);
         this.state.data = proxy;
     };
-    
+
 
 
 }
