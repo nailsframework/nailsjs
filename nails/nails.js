@@ -2,7 +2,6 @@
 
 class Nails {
     constructor(object) {
-        console.log('abcde')
         if (typeof object.methods.onInit !== 'undefined') {
             object.methods.onInit();
         }
