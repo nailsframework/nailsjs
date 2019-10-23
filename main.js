@@ -1,4 +1,10 @@
 import { LoginComponent } from './login.component.js';
+import Router from './nails/router.js';
+
+const router = new Router({
+  mode: 'hash',
+  root: '/'
+});
 
 var nails = new Nails({
   el: "body", //Start with # to specify id
@@ -25,3 +31,15 @@ var nails = new Nails({
     new LoginComponent()
   ]
 });
+
+router
+  .add(/about/, () => {
+    alert('welcome in about page');
+  })
+  .add(/products\/(.*)\/specification\/(.*)/, (id, specification) => {
+    alert(`products: ${id} specification: ${specification}`);
+  })
+  .add('', () => {
+    // general controller
+    console.log('welcome in catch all controller');
+  });
