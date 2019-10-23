@@ -1,9 +1,18 @@
-import { LoginComponent } from './components/login.component.js/index.js';
-var nails = new Nails({
+import { LoginComponent } from './components/login.component.js';
+import { Router } from './nails/coreComponents/router.component.js';
+
+
+var loginComponent = new LoginComponent();
+var routings = [{
+    component: loginComponent,
+    route: 'login'
+}]
+var router = new Router(routings);
+
+window.nails = new Nails({
   el: "body", //Start with # to specify id
   data: {
     title: "Your Nails App",
-    arr: [1,2,3,4],
     whoami: "NailsJS",
   },
   methods: {
@@ -13,9 +22,12 @@ var nails = new Nails({
     },
     onMounted(currentState) {
       currentState.data.headers = [{ 'Test': 'Value' }];
+      router.addEngine(currentState.componentEngine);
     },
   },
   components: [
-    new LoginComponent(),
+    loginComponent,router
   ]
 });
+
+router.navigate('/login')

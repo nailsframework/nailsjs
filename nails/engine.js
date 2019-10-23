@@ -11,6 +11,46 @@ class RenderingEngine {
 
     }
 
+    indexDOM() {
+        if (typeof this.state.element !== 'undefined') {
+            var element = null;
+            if (this.state.element.startsWith('#')) {
+                var selector = this.state.element.substr(1);
+                element = document.getElementById(selector);
+            } else {
+                element = document.getElementsByTagName(this.state.element);
+            }
+
+            if (typeof element === 'undefined' || element === null) {
+                console.error('No element with selector: ' + this.state.element + ' has been found');
+                return;
+            }
+            if (element instanceof HTMLCollection && element.length > 1) {
+                console.error('Multiple choices, try using id if the element tag is not unique. Your Selector was: ' + this.state.element);
+                return;
+            }
+            if (element instanceof HTMLCollection && element.length === 0) {
+                console.error('No element with selector: ' + this.state.element + ' has been found');
+                return;
+            }
+            if (element instanceof HTMLCollection) {
+                element = element[0];
+            }
+
+
+            //From now on, we need to loop through all elements
+            var activeElements = this.indexElement(element);
+            //Execute Directives
+
+            //TODO: Manage the activeElements here and not in interpolations
+            for (var el of activeElements) {
+                this.executeDirectivesOnElement(el, true);
+            }
+            this.executeInerpolationsOnElement(element);
+        }
+    }
+
+
     insert(index, string, ref) {
         if (index > 0)
             return ref.substring(0, index) + string + ref.substring(index, ref.length);
