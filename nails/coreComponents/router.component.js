@@ -13,7 +13,6 @@ export class Router {
 
 
             that.hashRoute = window.location.hash.replace('#/', '');
-            this.console.log(that.hashRoute);
             that.engine.recreateComponentsByName('yield'); // TODO: Find better way
         }
         this.selector = 'yield';
