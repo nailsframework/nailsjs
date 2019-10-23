@@ -27,8 +27,7 @@ window.nails = new Nails({
   },
   components: [
     loginComponent,router
-  ],
-  modules: [
-
   ]
 });
+
+router.navigate('/login')

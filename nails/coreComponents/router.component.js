@@ -1,12 +1,13 @@
 export class Router {
     constructor(routings) {
-        console.log('Creating router')
         this.routings = routings;
         var that = this;
         this.hashRoute = window.location.hash.replace('#/', '');
+        if(typeof routings === 'undefined'){
+            return;
+        }
         window.onhashchange = function(){
             if(typeof that.engine === 'undefined'){
-                this.console.log('url has changes, but engine was not defined');
                 return;
             }
 
@@ -20,11 +21,8 @@ export class Router {
     }
 
     getComponent(){
-        console.log(this.hashRoute);
-
         for(var route of this.routings){
             if(route.route === this.hashRoute){
-                console.log('found')
                 return route.component.selector;
             }
         }
@@ -34,8 +32,11 @@ export class Router {
         this.engine = engine;
     }
 
+    navigate(where){
+        window.location.hash = "/" + where.replace('/', '');
+    }
+
     render() {
-        console.log('rendering')
         return `
             <${this.getComponent()}></${this.getComponent()}>
         `

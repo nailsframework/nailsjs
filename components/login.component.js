@@ -10,12 +10,10 @@ export class LoginComponent{
     }
 
     render(){
-      console.log('render in login')
         return  `
         <div>
           <input type="text" placeholder="Username ">
           <input type="text" placeholder="Username">
-          {{whoami}} ${this.incrementCounter()}
         </div>
       `
     }

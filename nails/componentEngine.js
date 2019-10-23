@@ -14,23 +14,20 @@ class ComponentEngine {
     renderComponents() {
         if (typeof this.state.components !== 'undefined' && this.state.components !== null) {
             for (let i = 0; i < 300; i++) {
-
                 let html = document.body.innerHTML;
+
                 let newHtml;
                 for (var component of this.state.components) {
                     var elements = document.getElementsByTagName(component.selector);
                     if (elements.length === 0) {
-                        console.warn('couldnt find element with tag: ' + component.selector);
                         continue;
                     }
                     for (var element of elements) {
                         if (element.childNodes.length > 0) {
-                            console.warn('element ' + component.selector + ' appears to be already populated');
                             continue;
                         }
                         var componentHTML = component.render();
                         if (componentHTML.includes('<' + component.selector + '>')) {
-                            console.error('component ' + component.selector + ' has a recursion with no exit condition');
                             continue;
                         }
                         element.innerHTML = componentHTML;
@@ -39,12 +36,13 @@ class ComponentEngine {
                     newHtml = document.body.innerHTML;
 
                 }
-                if(html === newHtml){
+                if(html == newHtml){
                     break;
-                }
+                
             }
         }
     }
+}
 
     recreateComponentsByName(name) {
         if (typeof this.state.components !== 'undefined' && this.state.components !== null) {
@@ -55,7 +53,6 @@ class ComponentEngine {
                 }
             }
             if (this.state.components[name] === null) {
-                console.warn('Cannot rerender component ' + name + ' because it does not exist in the current scope');
                 return;
             }
             var elements = document.getElementsByTagName(name);
