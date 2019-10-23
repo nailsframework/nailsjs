@@ -62,7 +62,18 @@ class NailsDirectives {
                     }
                     stripped = stripped.substring(0, stripped.length - 1);
 
-                    html = html.replace(interpolation, engine.sanitize(eval('object'+stripped)));
+                    if(engine.getValueOfInterpolation(interpolation) !== 'undefined'){
+                        console.log('interpolation outside')
+                        console.log(engine.getValueOfInterpolation(interpolation) );
+                        console.log(typeof engine.getValueOfInterpolation(interpolation))
+                        console.log(interpolation);
+
+                        html = html.replace(interpolation, engine.getValueOfInterpolation(interpolation))
+                    }else{
+                        console.log('interpolation inside')
+                        html = html.replace(interpolation, engine.sanitize(eval('object'+stripped)));
+                    }
+                    
                 
             }
             element.innerHTML = html;

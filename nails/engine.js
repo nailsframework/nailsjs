@@ -201,7 +201,7 @@ class RenderingEngine {
         var interpolations = [];
         if (typeof text === 'undefined' || text === null) return interpolations;
         //text may come in this format 'hi, this is {{test}} and this is {{abc}}'
-        var matches = text.match(/{{(\w?.?)+}}/g);
+        var matches = text.match(/{{(.?\w?.?\w)+}}/g); //TODO: Regex is not perfect. May start with .
         if (matches === null) return [];
         for (var match of matches) {
             interpolations.push(match);
