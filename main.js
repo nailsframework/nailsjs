@@ -1,4 +1,5 @@
 import { LoginComponent } from './login.component.js';
+
 var nails = new Nails({
   el: "body", //Start with # to specify id
   data: {
@@ -19,12 +20,6 @@ var nails = new Nails({
     onMounted(currentState) {
       currentState.data.headers = [{ 'Test': 'Value' }];
     },
-    refresh() {
-      var state = nails.state;
-      get('https://jsonplaceholder.typicode.com/comments', state, function (posts) {
-        state.data.posts = posts;
-      });
-    }
   },
   components: [
     new LoginComponent()
