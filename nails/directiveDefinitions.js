@@ -62,7 +62,13 @@ class NailsDirectives {
                     }
                     stripped = stripped.substring(0, stripped.length - 1);
 
-                    html = html.replace(interpolation, engine.sanitize(eval('object'+stripped)));
+                    if(engine.getValueOfInterpolation(interpolation) !== 'undefined'){
+                        html = html.replace(interpolation, engine.getValueOfInterpolation(interpolation))
+                    }else{
+                        console.log('interpolation inside')
+                        html = html.replace(interpolation, engine.sanitize(eval('object'+stripped)));
+                    }
+                    
                 
             }
             element.innerHTML = html;
