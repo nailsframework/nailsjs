@@ -1,37 +1,43 @@
 export class Router {
-    constructor(routings) {
-        this.routings = routings;
+    constructor(state) {
+        this.state = state;
         var that = this;
+        this.selector = 'yield';
         this.hashRoute = window.location.hash.replace('#/', '');
-        if(typeof routings === 'undefined'){
-            return;
-        }
-        window.onhashchange = function(){
-            if(typeof that.engine === 'undefined'){
+
+        window.onhashchange = function () {
+            if (typeof that.engine === 'undefined') {
                 return;
             }
 
 
+            if(typeof that.engine  === 'undefined') return;
             that.hashRoute = window.location.hash.replace('#/', '');
+
             that.engine.recreateComponentsByName('yield'); // TODO: Find better way
         }
-        this.selector = 'yield';
-        
+
+    }
+    addRoutings(routings) {
+        this.routings = routings;
     }
 
-    getComponent(){
-        for(var route of this.routings){
-            if(route.route === this.hashRoute){
-                return route.component.selector;
+    getComponent() {
+        if (typeof this.routings === 'undefined') return '<div></div>'
+        for (var route of this.routings) {
+            if (route.route === this.hashRoute) {
+                var instance = new route.component();
+                return instance.selector;
             }
         }
     }
 
-    addEngine(engine){
+    addEngine(engine) {
+
         this.engine = engine;
     }
 
-    navigate(where){
+    navigate(where) {
         window.location.hash = "/" + where.replace('/', '');
     }
 

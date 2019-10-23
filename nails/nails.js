@@ -1,6 +1,9 @@
 'use strict';
-
-class Nails {
+import {State} from './state.js';
+import {RenderingEngine} from './engine.js'
+import {ComponentEngine} from './componentEngine.js'
+export class Nails {
+    
     constructor(object) {
         if (typeof object.methods.onInit !== 'undefined') {
             object.methods.onInit();
@@ -21,7 +24,7 @@ class Nails {
         this.state.components = object.components;
 
         this.engine = new RenderingEngine(this.state);
-        this.componentEngine = new ComponentEngine(this.state, this.engine, this);
+        this.componentEngine = new ComponentEngine(this.state, this.engine, this, object.routings);
         this.setUpProxy();
         this.componentEngine.renderComponents();
         this.engine.indexDOM();

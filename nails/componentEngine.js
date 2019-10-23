@@ -1,23 +1,42 @@
-class ComponentEngine {
-    constructor(state, engine, nails) {
+import { Router } from './coreComponents/router.component.js';
+
+export class ComponentEngine {
+    constructor(state, engine, nails, routings) {
         this.state = state;
         this.engine = engine;
         this.instance = this;
         this.nails = nails;
+        this.routings = routings;
     }
 
     getInstance() {
         return this.instance;
     }
 
+    injectComponents() {
+        this.state.mountedComponents = [];
+
+        for (var component of this.state.components) {
+            var instance = new component(this.state);
+            if (instance instanceof Router) {
+                this.state.router = instance;
+                instance.addRoutings(this.routings);
+                instance.addEngine(this);
+                instance.navigate('');
+            }
+
+            this.state.mountedComponents.push(instance);
+        }
+    }
 
     renderComponents() {
-        if (typeof this.state.components !== 'undefined' && this.state.components !== null) {
+        this.injectComponents();
+        if (typeof this.state.mountedComponents !== 'undefined' && this.state.mountedComponents !== null && this.state.mountedComponents.length > 0) {
             for (let i = 0; i < 300; i++) {
                 let html = document.body.innerHTML;
 
                 let newHtml;
-                for (var component of this.state.components) {
+                for (var component of this.state.mountedComponents) {
                     var elements = document.getElementsByTagName(component.selector);
                     if (elements.length === 0) {
                         continue;
@@ -36,23 +55,26 @@ class ComponentEngine {
                     newHtml = document.body.innerHTML;
 
                 }
-                if(html == newHtml){
+                if (html == newHtml) {
                     break;
-                
+
+                }
             }
         }
     }
-}
 
     recreateComponentsByName(name) {
-        if (typeof this.state.components !== 'undefined' && this.state.components !== null) {
+        if (typeof this.state.mountedComponents !== 'undefined' && this.state.mountedComponents !== null) {
             var component = null;
-            for (var c of this.state.components) {
+            for (var c of this.state.mountedComponents) {
                 if (c.selector === name) {
                     component = c;
                 }
             }
-            if (this.state.components[name] === null) {
+            if(component === null){
+                return;
+            }
+            if (this.state.mountedComponents[name] === null) {
                 return;
             }
             var elements = document.getElementsByTagName(name);

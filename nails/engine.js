@@ -1,6 +1,6 @@
 'use strict';
-
-class RenderingEngine {
+import {NailsDirectives} from './directiveDefinitions.js';
+export class RenderingEngine {
 
     constructor(state) {
         if (typeof state === 'undefined' || state === null) {
