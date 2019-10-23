@@ -42,6 +42,10 @@ class Nails {
             var htmlOld = document.body.innerHTML;
             for(var i = 0; i < 10000; i++){
                 for(var component of this.state.components){
+                    if(typeof component.selector === 'undefined'){
+                        console.error('NailsJS component renderer: Selector for component undefined')
+                        continue;
+                    }
                     html = html.replace(new RegExp('<' + component.selector + '>', 'g'), component.render());
                 }
                 if(html === htmlOld) break;

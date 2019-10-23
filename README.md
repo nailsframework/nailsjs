@@ -29,8 +29,8 @@ Thats it.
 -  Migrating from vue .js to Nails is rather easy. Replace Vue with Nails and all v- directives to n-.
 -  
     
-# New Features!
-
+# Features
+  - Reusable Components
   - Reactive DOM. Change values in the console and see the magic happen.
   - String interpolation
   - Directives
@@ -101,6 +101,50 @@ All Directives:
 ```n-for```: Generates a field with the name specified in the ```directive``` and updates all elements accordingly.
 ```n-form```: Generates a field in the state which updates when the elements "Text-Node" updates. Then you can use for example
               <input n-form="username" type="text"> creates state.data.username.
+              
+### Components
+
+Implement a Component like this:
+```js
+export class LoginComponent{
+    constructor(state){
+        this.state = state;
+        this.selector = 'login'
+    }
+    
+
+    render(){
+        return  `
+        <div>
+          <input type="text" placeholder="Username ">
+          <input type="text" placeholder="Username">
+        </div>
+      `
+    }
+}
+```
+
+In your Nails constructor add this object:
+
+```js
+components: [
+    new LoginComponent()
+  ]
+```
+
+And import your Component like this:
+
+```js
+import { LoginComponent } from './login.component.js';
+```
+
+In your HTML use your Component like this:
+
+```html
+<login></login>
+```
+
+Note: login is the selector we defined earlier in the Component.
 
 ### Branches
 
