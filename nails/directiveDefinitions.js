@@ -51,7 +51,7 @@ class NailsDirectives {
         function interpolateCustomElement(element, object, descriptor) {
             //Performancewise, we render the whole html element.
             var html = element.innerHTML;
-            var interpolations = engine.getInterpolationsFortextContent(html);
+            var interpolations = engine.getInterpolationsForTextContent(html);
             for (var interpolation of interpolations) {
                 var stripped = engine.stripAndTrimInterpolation(interpolation);
                     var args = stripped.split('.');
