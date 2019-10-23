@@ -30,3 +30,5 @@ window.nails = new Nails({
   ]
 });
 
+router.navigate('')
+
