@@ -14,6 +14,7 @@ class State {
         this.activeDirectiveElements = [];
         this.engine = new RenderingEngine(this);
         this.disabledElements = []
+        this.componentEngine = new ComponentEngine(this, this.engine);
 
     }
     addActiveDirectiveElement(key, statement, element) {
