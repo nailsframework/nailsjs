@@ -1,6 +1,7 @@
 'use strict';
-
-class State {
+import {RenderingEngine} from './engine.js'
+import {ComponentEngine} from './componentEngine.js'
+export class State {
 
     getInstance() {
         if (this.instance === null) {

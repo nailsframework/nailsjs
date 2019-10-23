@@ -18,7 +18,6 @@ although it's still in development. The Codebase is about 50KB and thats all. No
 
 Also there is no learning curve, because to create a wonderful, reactive WebApp you don't need to learn some complicated stuff.
 NailsJS is designed to be intuitive and easy. 
-To use a Rest API, all you need is four lines of code. You just have to tell nails THREE SIMPLE THINGS: what to fetch, and where and how to embed it.
 
 Thats it. 
 

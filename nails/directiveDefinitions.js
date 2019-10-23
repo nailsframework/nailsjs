@@ -1,6 +1,6 @@
 'use strict';
 
-class NailsDirectives {
+export class NailsDirectives {
 
 
     constructor() {
