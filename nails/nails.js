@@ -1,10 +1,13 @@
 'use strict';
-import {State} from './state.js';
-import {RenderingEngine} from './engine.js'
-import {ComponentEngine} from './componentEngine.js'
+import { State } from './state.js';
+import { RenderingEngine } from './engine.js'
+import { ComponentEngine } from './componentEngine.js'
+import { Injector } from './core/injector';
+
 export class Nails {
-    
+
     constructor(object) {
+
         if (typeof object.methods.onInit !== 'undefined') {
             object.methods.onInit();
         }
@@ -26,9 +29,14 @@ export class Nails {
         this.engine = new RenderingEngine(this.state);
         this.componentEngine = new ComponentEngine(this.state, this.engine, this, object.routings);
         this.setUpProxy();
+        this.injector = new Injector(this.state);
+        this.prepareInjector(object.declarations);
+        this.state.addInjector(this.injector);
         this.componentEngine.renderComponents();
         this.engine.indexDOM();
         this.engine.setTitle();
+        window.injector = this.injector;
+
         this.state.methods.getState = function () {
             return this.state;
         }
@@ -40,6 +48,16 @@ export class Nails {
 
 
 
+    prepareInjector(arr){
+        if(!Array.isArray(arr)){
+            console.warn('Cannot iterate over declarations, since they are not an array');
+            return;
+        }
+        for(var d of arr){
+            let instance = new d();
+            this.injector.insert(instance);
+        }
+    }
     notifyDOM(target, prop, value) {
 
         var refs = this.state.findElementsByObject(target, prop);
@@ -58,7 +76,7 @@ export class Nails {
 
         return true;
     };
-    
+
     setUpProxy() {
         var handler = {
             state: this.state,

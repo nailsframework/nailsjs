@@ -11,7 +11,6 @@ export class Router {
                 return;
             }
 
-
             if (typeof that.engine === 'undefined') return;
             that.hashRoute = window.location.hash.replace('#/', '');
 
@@ -27,7 +26,7 @@ export class Router {
         if (typeof this.routings === 'undefined') return 'div';
         for (var route of this.routings) {
             if (route.route === this.hashRoute) {
-                var instance = new route.component();
+                var instance = new route.component(this.state);
                 return instance.selector;
             }
         }

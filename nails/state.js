@@ -18,6 +18,9 @@ export class State {
         this.componentEngine = new ComponentEngine(this, this.engine);
 
     }
+    addInjector(injector){
+        this.injector = injector;
+    }
     addActiveDirectiveElement(key, statement, element) {
         
         for (var el of this.activeDirectiveElements) {

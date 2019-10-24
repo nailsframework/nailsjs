@@ -1,7 +1,7 @@
 import { LoginComponent } from './components/login.component.js';
 import { Router } from './nails/coreComponents/router.component.js';
 import { Nails } from './nails/nails.js'
-
+import { Greeter } from './modules/injectme.module.js';
 
 
 window.nails = new Nails({
@@ -25,7 +25,10 @@ window.nails = new Nails({
     routings: [{
         component: LoginComponent,
         route: 'login'
-    }]
+    }],
+    declarations: [
+        Greeter
+    ]
 });
 
 

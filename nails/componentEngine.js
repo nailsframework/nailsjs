@@ -1,4 +1,5 @@
 import { Router } from './coreComponents/router.component.js';
+import { type } from 'os';
 
 export class ComponentEngine {
     constructor(state, engine, nails, routings) {
@@ -18,6 +19,7 @@ export class ComponentEngine {
         this.state.mountedComponents = [];
 
         for (var component of this.state.components) {
+            console.log('state is ' + typeof this.state)
             var instance = new component(this.state);
             if (instance instanceof Router) {
                 this.state.router = instance;

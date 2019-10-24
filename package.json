@@ -26,5 +26,8 @@
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.9.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "install": "^0.13.0",
+    "npm": "^6.12.0"
+  }
 }
