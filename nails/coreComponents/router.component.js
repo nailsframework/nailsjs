@@ -17,6 +17,12 @@ export class Router {
             that.engine.recreateComponentsByName('yield'); // TODO: Find better way
         }
 
+
+    }
+
+
+    isFunction(functionToCheck) {
+        return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
     }
     addRoutings(routings) {
         this.routings = routings;
@@ -26,8 +32,15 @@ export class Router {
         if (typeof this.routings === 'undefined') return 'div';
         for (var route of this.routings) {
             if (route.route === this.hashRoute) {
-                var instance = new route.component(this.state);
-                return instance.selector;
+                if (this.isFunction(route.guard)) {
+                    if (route.guard(this)) {
+                        var instance = new route.component(this.state);
+                        return instance.selector;
+                    } else {
+                        return 'div'
+                    }
+                }
+
             }
         }
     }
