@@ -14,6 +14,7 @@ export class ComponentEngine {
     }
 
     injectComponents() {
+        if(Array.isArray(this.state.mountedComponents)) return;
         this.state.mountedComponents = [];
 
         for (var component of this.state.components) {
@@ -21,7 +22,6 @@ export class ComponentEngine {
             if (instance instanceof Router) {
                 this.state.router = instance;
                 instance.addRoutings(this.routings);
-                instance.addEngine(this);
                 instance.navigate('');
             }
 
