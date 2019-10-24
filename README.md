@@ -19,17 +19,11 @@ although it's still in development. The Codebase is about 50KB and thats all. No
 Also there is no learning curve, because to create a wonderful, reactive WebApp you don't need to learn some complicated stuff.
 NailsJS is designed to be intuitive and easy. 
 
-Thats it. 
+Thats it.
 
-# Migrate from
-### Angular
-  - I would not recommend you to migrate from Angular to Nails unless you are willing to redo your architectute.
-### Vue.js
--  Migrating from vue .js to Nails is rather easy. Replace Vue with Nails and all v- directives to n-.
--  
-    
 # Features
   - Reusable Components
+  - Dependency Injection
   - Reactive DOM. Change values in the console and see the magic happen.
   - String interpolation
   - Directives
