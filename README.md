@@ -32,7 +32,7 @@ Thats it.
   - Build from Ground up for Reactivity. No setState or other method calls required
 ### Installation
 
-Please refer to the doucumentation in the wiki pages.
+Please refer to the documentation in the wiki pages.
 
 ### Branches
 
