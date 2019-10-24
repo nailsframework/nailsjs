@@ -1,6 +1,7 @@
 'use strict';
-
-class State {
+import {RenderingEngine} from './engine.js'
+import {ComponentEngine} from './componentEngine.js'
+export class State {
 
     getInstance() {
         if (this.instance === null) {
@@ -16,6 +17,9 @@ class State {
         this.disabledElements = []
         this.componentEngine = new ComponentEngine(this, this.engine);
 
+    }
+    addInjector(injector){
+        this.injector = injector;
     }
     addActiveDirectiveElement(key, statement, element) {
         

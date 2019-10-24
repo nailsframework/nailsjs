@@ -1,0 +1,33 @@
+{
+  "name": "nailsjs",
+  "version": "1.0.0",
+  "description": "The JS Library in the NailsFramework toolset",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack -p && webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nailsframework/nails.git"
+  },
+  "author": "Dominic Järmann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nailsframework/nails/issues"
+  },
+  "homepage": "https://github.com/nailsframework/nails#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "dependencies": {
+    "install": "^0.13.0",
+    "npm": "^6.12.0"
+  }
+}
