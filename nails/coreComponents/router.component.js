@@ -39,6 +39,9 @@ export class Router {
                     } else {
                         return 'div'
                     }
+                } else {
+                    var instance = new route.component(this.state);
+                    return instance.selector;
                 }
 
             }

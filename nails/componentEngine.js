@@ -19,7 +19,6 @@ export class ComponentEngine {
         this.state.mountedComponents = [];
 
         for (let component of this.state.components) {
-            console.log('state is ' + typeof this.state)
             let instance = new component(this.state);
             if (instance instanceof Router) {
                 this.state.router = instance;
