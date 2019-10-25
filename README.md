@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/nailsframework/nailsjs.svg?branch=master)](https://travis-ci.org/nailsframework/nailsjs)
+
 # NailsFramework
 
 NailsFramework or short NailsJS is a new Javascript library.
