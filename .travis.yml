@@ -2,4 +2,5 @@ language: node_js
 node_js:
   - 7
 before_install:
+  - npm i -g npm@next
   - npm i -g webpack && npm install --save-dev webpack-cli
