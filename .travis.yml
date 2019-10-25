@@ -2,5 +2,8 @@ language: node_js
 node_js:
   - 7
 before_install:
+  -  apt install nodejs
+  -  apt update
+  -  apt upgrade
   - npm i -g npm@next
   - npm i -g webpack && npm install --save-dev webpack-cli
