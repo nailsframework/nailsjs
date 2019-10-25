@@ -3,6 +3,7 @@ import { State } from './state.js';
 import { RenderingEngine } from './engine.js'
 import { ComponentEngine } from './componentEngine.js'
 import { Injector } from './core/injector';
+import { type } from 'os';
 
 export class Nails {
 
@@ -23,8 +24,16 @@ export class Nails {
         if (object.hasOwnProperty('methods')) {
             this.state.methods = object.methods;
         }
-        this.state.components = object.components;
+        if (typeof object.components === 'undefined') {
+            this.state.components = [];
+        } else {
+            if (Array.isArray(object.components)) {
+                this.state.components = object.components;
+            } else {
+                this.state.components = [];
 
+            }
+        }
         this.engine = new RenderingEngine(this.state);
         this.componentEngine = new ComponentEngine(this.state, this.engine, this, object.routings);
         this.setUpProxy();
@@ -47,12 +56,12 @@ export class Nails {
 
 
 
-    prepareInjector(arr){
-        if(!Array.isArray(arr)){
+    prepareInjector(arr) {
+        if (!Array.isArray(arr)) {
             console.warn('Cannot iterate over declarations, since they are not an array');
             return;
         }
-        for(var d of arr){
+        for (var d of arr) {
             let instance = new d();
             this.injector.insert(instance);
         }

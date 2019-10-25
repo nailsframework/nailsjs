@@ -4,8 +4,10 @@
   "description": "The JS Library in the NailsFramework toolset",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack -p && webpack-dev-server"
+    "test": "webpack --config production.config.js && rm -rf ./dist",
+    "start": "webpack -p && webpack-dev-server",
+    "build": "webpack --config production.config.js && cp *.js dist/ && cp *.html dist/ && rm -rf node_modules && find . -path ./dist -prune -o -type d  -exec cp -R {} dist/ \\;"
+    
   },
   "repository": {
     "type": "git",
