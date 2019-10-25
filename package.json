@@ -4,7 +4,7 @@
   "description": "The JS Library in the NailsFramework toolset",
   "main": "main.js",
   "scripts": {
-    "test": "webpack --config production.config.js && rm -rf ./dist",
+    "test": "webpack --config production.config.js",
     "start": "webpack -p && webpack-dev-server",
     "build": "webpack --config production.config.js && cp *.js dist/ && cp *.html dist/ && rm -rf node_modules && find . -path ./dist -prune -o -type d  -exec cp -R {} dist/ \\;"
     
